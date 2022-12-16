@@ -9,9 +9,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
@@ -38,7 +41,11 @@ public class PrincipalController implements Initializable {
     
     @FXML
     private void onClick_clientes(ActionEvent event) throws IOException {
-    App.setRoot("clientes");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("clientes.fxml"));
+        Stage stage = new Stage();
+        stage.setScene(new Scene(loader.load()));
+        stage.setResizable(false);
+        stage.show();
     }
 
     @FXML

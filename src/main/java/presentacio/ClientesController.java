@@ -11,22 +11,35 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 /**
  * FXML Controller class
  *
  * @author Albert
  */
-public class Clientes implements Initializable {
+public class ClientesController implements Initializable {
 
 
     @FXML
-    private Button btn_atras;
-    @FXML
-    private Button btn_edit;
+    private Button btn_salir;
     @FXML
     private Button btn_add;
     @FXML
-    private Button btn_delete;
+    private Button btn_modificar;
+    @FXML
+    private Button btn_borrar;
+    @FXML
+    private TextField txtEmail;
+    @FXML
+    private TextField txtDni;
+    @FXML
+    private TextField txtNombre;
+    @FXML
+    private TextField txtTelefono;
+    @FXML
+    private TextField txtCredito;
+    @FXML
+    private TextField txtFecha;
     /**
      * Initializes the controller class.
      */
@@ -36,19 +49,19 @@ public class Clientes implements Initializable {
     }    
     
     @FXML
-    private void onClickAtras(ActionEvent event) {
+    private void onClick_salir(ActionEvent event) {
     }
 
     @FXML
-    private void onClickEdit(ActionEvent event) {
+    private void onClick_añadir(ActionEvent event) {
     }
 
     @FXML
-    private void onClickAdd(ActionEvent event) {
+    private void onClick_modificar(ActionEvent event) {
     }
 
     @FXML
-    private void onClickDelete(ActionEvent event) {
+    private void onClick_borrar(ActionEvent event) {
     }
 
 }
