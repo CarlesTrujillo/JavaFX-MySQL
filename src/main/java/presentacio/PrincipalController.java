@@ -55,7 +55,7 @@ public class PrincipalController implements Initializable {
 
     @FXML
     private void onClick_ordenes(ActionEvent event) throws IOException {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("clientes.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("comandas.fxml"));
         Stage stage = new Stage();
         stage.setScene(new Scene(loader.load()));
         //stage.setResizable(false);
