@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.ComandasController">
-    
-</AnchorPane>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="451.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.ComandasController">
+   <children>
+      <AnchorPane prefHeight="451.0" prefWidth="670.0">
+         <children>
+            <TableView layoutX="13.0" layoutY="121.0" prefHeight="260.0" prefWidth="693.0">
+              <columns>
+                <TableColumn prefWidth="135.0" text="Id de la comanda" />
+                <TableColumn prefWidth="157.0" text="Fecha de la comanda" />
+                  <TableColumn prefWidth="136.0" text="Fecha de entrega" />
+                  <TableColumn prefWidth="121.0" text="Fecha de envio" />
+                  <TableColumn prefWidth="143.0" text="Email del cliente" />
+              </columns>
+            </TableView>
+            <Button fx:id="btn_salir" layoutX="7.0" layoutY="7.0" mnemonicParsing="false" onAction="#onClick_salir" text="Salir" />
+            <Button fx:id="btn_add" layoutX="14.0" layoutY="394.0" mnemonicParsing="false" onAction="#onClick_añadir" prefHeight="39.0" prefWidth="193.0" text="Añadir" />
+            <Button fx:id="btn_modificar" layoutX="263.0" layoutY="394.0" mnemonicParsing="false" onAction="#onClick_modificar" prefHeight="39.0" prefWidth="193.0" text="Modificar" />
+            <Button fx:id="btn_borrar" layoutX="513.0" layoutY="394.0" mnemonicParsing="false" onAction="#onClick_borrar" prefHeight="39.0" prefWidth="193.0" text="Borrar" />
+            <Label layoutX="32.0" layoutY="91.0" text="Fecha inicial" />
+            <TextField layoutX="123.0" layoutY="86.0" prefHeight="31.0" prefWidth="95.0" />
+            <Label layoutX="234.0" layoutY="91.0" text="-" />
+            <Label layoutX="252.0" layoutY="91.0" text="Fecha final" />
+            <TextField layoutX="336.0" layoutY="86.0" prefHeight="31.0" prefWidth="95.0" />
+            <Button layoutX="447.0" layoutY="86.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="136.0" text="Filtar" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

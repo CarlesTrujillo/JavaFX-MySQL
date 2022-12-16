@@ -36,7 +36,7 @@ public class PrincipalController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+       
     }    
     
     @FXML
@@ -55,7 +55,11 @@ public class PrincipalController implements Initializable {
 
     @FXML
     private void onClick_ordenes(ActionEvent event) throws IOException {
-    App.setRoot("comandas");
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("clientes.fxml"));
+        Stage stage = new Stage();
+        stage.setScene(new Scene(loader.load()));
+        //stage.setResizable(false);
+        stage.show();
     }
 
     @FXML

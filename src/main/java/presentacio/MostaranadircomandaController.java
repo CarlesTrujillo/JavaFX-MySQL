@@ -10,25 +10,45 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+
 
 /**
  * FXML Controller class
  *
  * @author andre
  */
-public class ComandasController implements Initializable {
+public class MostaranadircomandaController implements Initializable {
 
-    @FXML
+     @FXML
     private Button btn_add;
 
     @FXML
     private Button btn_salir;
 
     @FXML
+    private TextField txtNombre;
+
+    @FXML
+    private TextField txtTelefono;
+
+    @FXML
+    private TextField txtEmail;
+
+    @FXML
     private Button btn_modificar;
 
     @FXML
     private Button btn_borrar;
+
+    @FXML
+    private TextField txtDni;
+
+    @FXML
+    private TextField txtCredito;
+
+    @FXML
+    private TextField txtFecha;
 
     @FXML
     void onClick_salir(ActionEvent event) {
@@ -49,7 +69,6 @@ public class ComandasController implements Initializable {
     void onClick_borrar(ActionEvent event) {
 
     }
-
     
     /**
      * Initializes the controller class.
