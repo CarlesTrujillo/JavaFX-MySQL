@@ -5,6 +5,7 @@
 package dades;
 
 import aplicacio.model.Cliente;
+import aplicacio.model.Producto;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,5 +36,24 @@ public class MostrarItems {
             }
         return clientes;
         }
+       
+        public static ArrayList<Producto> muestraProductos() throws SQLException {
+            Connection con = DataSource.getConnection("classicmodels", "root", "123456");
+            ArrayList<Producto> productos = new ArrayList<>();
+            Statement stmt = con.createStatement();
+            String query = "select * from products";
+            ResultSet rs = stmt.executeQuery(query);
             
+            while(rs.next()) {
+                Producto producto = new Producto();
+                producto.setCode(rs.getInt("productCode"));
+                producto.setNombre(rs.getString("productName"));
+                producto.setDescripcion(rs.getString("productDescription"));
+                producto.setCantidadStock(rs.getInt("quantityInStock"));
+                double doble = Double.parseDouble(rs.getString("price"));
+                producto.setPrecio(doble);
+                productos.add(producto);
+            }
+            return productos;
+        }
 }
