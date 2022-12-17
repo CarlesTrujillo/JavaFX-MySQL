@@ -25,14 +25,4 @@ public class InsertItem {
                 + cliente.getTelefono() + "," + cliente.getCreditoLimite() + "," + cliente.getFechaNacimiento() + ");";
         ResultSet rs = stmt.executeQuery(query);
     }
-
-    // Insert de Productos en la BBDD
-    public void insertarProducto(Producto producto) throws SQLException {
-        Connection con = DataSource.getConnection("classicmodels", "root", "123456");
-        Statement stmt = con.createStatement();
-        String query = "Insert into products(productCode, productName, productDescription, quantityInStock, buyPrice) "
-                + "values (" + producto.getCode() + "," + producto.getNombre() + "," + producto.getDescripcion() + ","
-                + producto.getCantidadStock() + "," + producto.getPrecio() + ");";
-        ResultSet rs = stmt.executeQuery(query);
-    }
 }

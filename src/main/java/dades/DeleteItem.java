@@ -23,13 +23,5 @@ public class DeleteItem {
         String query = "delete from customers where customerEmail = " + cliente.getEmail();
         ResultSet rs = stmt.executeQuery(query);
     }
-    
-    // Delete de productos en la BBDD
-    public void deleteProducto(Producto producto) throws SQLException {
-        Connection con = DataSource.getConnection("classicmodels", "root", "123456");
-        Statement stmt = con.createStatement();
-        String query = "delete from products where productCode = " + producto.getCode();
-        ResultSet rs = stmt.executeQuery(query);
-    }
 
 }
