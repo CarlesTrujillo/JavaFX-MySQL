@@ -23,6 +23,14 @@ public class Producto {
         this.cantidadStock = cantidadStock;
         this.precio = precio;
     }
+    
+    public Producto() {
+        this.code = 0;
+        this.nombre = "";
+        this.descripcion = "";
+        this.cantidadStock = 0;
+        this.precio = 0;
+    }
 
     public int getCode() {
         return code;
