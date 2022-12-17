@@ -18,7 +18,7 @@ public class DeleteItem {
    
     // Delete de clientes en la BBDD
     public void deleteCliente(Cliente cliente) throws SQLException {
-        Connection con = DataSource.getConnection();
+        Connection con = DataSource.getConnection("classicmodels", "root", "123456");
         Statement stmt = con.createStatement();
         String query = "delete from customers where customerEmail = " + cliente.getEmail();
         ResultSet rs = stmt.executeQuery(query);
@@ -26,7 +26,7 @@ public class DeleteItem {
     
     // Delete de productos en la BBDD
     public void deleteProducto(Producto producto) throws SQLException {
-        Connection con = DataSource.getConnection();
+        Connection con = DataSource.getConnection("classicmodels", "root", "123456");
         Statement stmt = con.createStatement();
         String query = "delete from products where productCode = " + producto.getCode();
         ResultSet rs = stmt.executeQuery(query);

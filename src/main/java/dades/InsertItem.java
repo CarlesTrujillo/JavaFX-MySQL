@@ -18,7 +18,7 @@ public class InsertItem {
 
     // Insert de Clientes en la BBDD
     public void insertarCliente(Cliente cliente) throws SQLException {
-        Connection con = DataSource.getConnection();
+        Connection con = DataSource.getConnection("classicmodels", "root", "123456");
         Statement stmt = con.createStatement();
         String query = "Insert into customers(customerEmail,idCard,customerName,phone,creditLimit,birthDate) "
                 + "values (" + cliente.getEmail() + "," + cliente.getDni() + "," + cliente.getNombre() + ","
@@ -28,7 +28,7 @@ public class InsertItem {
 
     // Insert de Productos en la BBDD
     public void insertarProducto(Producto producto) throws SQLException {
-        Connection con = DataSource.getConnection();
+        Connection con = DataSource.getConnection("classicmodels", "root", "123456");
         Statement stmt = con.createStatement();
         String query = "Insert into products(productCode, productName, productDescription, quantityInStock, buyPrice) "
                 + "values (" + producto.getCode() + "," + producto.getNombre() + "," + producto.getDescripcion() + ","

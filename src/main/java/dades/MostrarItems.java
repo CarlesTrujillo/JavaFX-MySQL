@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class MostrarItems {
         public static ArrayList<Cliente> muestraClientes() throws SQLException{
-        Connection con = DataSource.getConnection();
+        Connection con = DataSource.getConnection("classicmodels", "root", "123456");
         ArrayList<Cliente> clientes = new ArrayList<Cliente>();
             Statement stmt = con.createStatement();
             String query = "select * from customers";
