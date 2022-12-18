@@ -4,9 +4,13 @@
  */
 package presentacio;
 
+import aplicacio.LogicaCliente;
 import model.Cliente;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -110,15 +114,12 @@ public class ClientesController implements Initializable {
         double credito = Double.parseDouble(txtCredito.getText());
         cliente.setCreditoLimite(credito);
         cliente.setFechaNacimiento(txtFecha.getText());       
-        llistaObservableClientes.add(cliente);
-        tablaClientes.refresh();
         try {
             dades.DataSource.getConnection("m03uf6_22_23","root","123456");
             aplicacio.LogicaCliente.setCliente(cliente);
-            
+            llistaObservableClientes.add(cliente);
+            tablaClientes.refresh();
         } catch (SQLException ex) {
-            System.out.println("Fallo en clientesController");
-            Logger.getLogger(ClientesController.class.getName()).log(Level.SEVERE, null, ex);
         }
     
     }
@@ -128,7 +129,27 @@ public class ClientesController implements Initializable {
     }
 
     @FXML
-    private void onClick_borrar(ActionEvent event) {
+    private void onClick_borrar(ActionEvent event) throws SQLException {
+        Cliente cliente = (Cliente) tablaClientes.getSelectionModel().getSelectedItem();
+        LogicaCliente.deleteCliente(cliente);
+        llistaObservableClientes.remove(cliente);
+        tablaClientes.refresh();
     }
-
+    
+    
+    public static boolean comprobarEdad(String fecha) throws SQLException{
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fecha1 = LocalDate.parse(fecha, formatter);
+        LocalDate fecha2 = LocalDate.now();
+        int edadMin = Integer.parseInt(LogicaCliente.consultarEdadMinima());
+        
+        Period period = Period.between(fecha1,fecha2);
+        
+        if(period.getYears()>edadMin){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
 }

@@ -19,13 +19,21 @@ public class LogicaCliente {
     
     public static ArrayList<Cliente> getClientes() throws SQLException{
         
-        ArrayList<Cliente> clienteLogica = dades.MostrarItems.muestraClientes();
+        ArrayList<Cliente> clienteLogica = dades.clienteDAO.muestraClientes();
         
     return clienteLogica;
     }
     
     public static void setCliente(Cliente cliente) throws SQLException{
-       dades.InsertItem.insertarCliente(cliente);
+       dades.clienteDAO.insertarCliente(cliente);
+    }
+    public static void deleteCliente(Cliente cliente) throws SQLException{
+        dades.clienteDAO.deleteCliente(cliente);
+    }
+    
+    public static String consultarEdadMinima() throws SQLException{
+        String edad = dades.clienteDAO.consultarEdad();
+        return edad;
     }
     
     

@@ -14,13 +14,5 @@ import java.sql.Statement;
  * Clase para borrar datos en la BBDD
  */
 public class DeleteItem {
-
-    // Delete de clientes en la BBDD
-    public void deleteCliente(Cliente cliente) throws SQLException {
-        Connection con = DataSource.getConnection("classicmodels", "root", "123456");
-        Statement stmt = con.createStatement();
-        String query = "delete from customers where customerEmail = " + cliente.getEmail();
-        ResultSet rs = stmt.executeQuery(query);
-    }
     
 }
