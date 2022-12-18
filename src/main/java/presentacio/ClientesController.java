@@ -20,12 +20,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -103,37 +108,86 @@ public class ClientesController implements Initializable {
     private void onClick_salir(ActionEvent event) {
     
     }
+    
+    @FXML
+    void onKey_Insert(KeyEvent event) {
+        
+        /***
+         * Hotkey para insertar un usuario.
+         */
+        
+        if(event.getCode() == KeyCode.ENTER){
+            insertarUsuario();
+        }
+        
+        /***
+         * Hotkey para cerrar la ventana.
+         */
+        if(event.getCode() == KeyCode.ESCAPE){
+            Node source = (Node) event.getSource();
+            Stage stage = (Stage) source.getScene().getWindow();
+            stage.close();
+        }   
+    }
+    
+    /***
+     * Hotkey para el boton de borrado.
+     * 
+     */
+    @FXML
+    void onKey_Delete(KeyEvent event) throws SQLException {
+        if(event.getCode() == KeyCode.DELETE){
+            eliminarUsuario();
+        }   
+    }
+    
+    /***
+     * Funcion para la seleccion de un usuario y el mostrado en los campos de texto.
+     * 
+     * @param event 
+     */
 
     @FXML
-    private void onClick_añadir(ActionEvent event){
-        Cliente cliente = new Cliente();
-        cliente.setEmail(txtEmail.getText());
-        cliente.setDni(txtDni.getText());
-        cliente.setNombre(txtNombre.getText());
-        cliente.setTelefono(txtTelefono.getText());
-        double credito = Double.parseDouble(txtCredito.getText());
-        cliente.setCreditoLimite(credito);
-        cliente.setFechaNacimiento(txtFecha.getText());       
-        try {
-            dades.DataSource.getConnection("m03uf6_22_23","root","123456");
-            aplicacio.LogicaCliente.setCliente(cliente);
-            llistaObservableClientes.add(cliente);
-            tablaClientes.refresh();
-        } catch (SQLException ex) {
+    void onItem_Selected(MouseEvent event) {
+        Cliente cliente = (Cliente) tablaClientes.getSelectionModel().getSelectedItem();
+        if(cliente!=null){
+            txtEmail.setText(cliente.getEmail());
+            txtDni.setText(cliente.getDni());
+            txtTelefono.setText(cliente.getTelefono());
+            txtNombre.setText(cliente.getNombre());
+            txtCredito.setText(cliente.getCreditoLimite() + "");
+            txtFecha.setText(cliente.getFechaNacimiento());
         }
+    }
+
+    /***
+     * Funcion para el boton de añadir usuario.
+     * @param event 
+     */
+    @FXML
+    private void onClick_añadir(ActionEvent event){
+        insertarUsuario();
+    }
+    /***
+     * Accion para el boton de modificar usuario.
+     * 
+     * @param event 
+     */
+    @FXML
+    private void onClick_modificar(ActionEvent event) {
+    
     
     }
 
-    @FXML
-    private void onClick_modificar(ActionEvent event) {
-    }
-
+    /***
+     * Accion para el boton de borrar usuario.
+     * 
+     * @param event
+     * @throws SQLException 
+     */
     @FXML
     private void onClick_borrar(ActionEvent event) throws SQLException {
-        Cliente cliente = (Cliente) tablaClientes.getSelectionModel().getSelectedItem();
-        LogicaCliente.deleteCliente(cliente);
-        llistaObservableClientes.remove(cliente);
-        tablaClientes.refresh();
+        eliminarUsuario();
     }
     
     
@@ -150,6 +204,51 @@ public class ClientesController implements Initializable {
         }else{
             return false;
         }
+    }
+    
+    /***
+     * Funcion para limpiar los campos de texto despues de un Insert, Update, Delete.
+     */
+    public void limpiarCampos(){
+        txtEmail.clear();
+        txtDni.clear();
+        txtTelefono.clear();
+        txtNombre.clear();
+        txtCredito.clear();
+        txtFecha.clear();
+    }
+    /***
+     * Funcion para insertar un usuario.
+     */
+    public void insertarUsuario(){
+        Cliente cliente = new Cliente();
+        cliente.setEmail(txtEmail.getText());
+        cliente.setDni(txtDni.getText());
+        cliente.setNombre(txtNombre.getText());
+        cliente.setTelefono(txtTelefono.getText());
+        double credito = Double.parseDouble(txtCredito.getText());
+        cliente.setCreditoLimite(credito);
+        cliente.setFechaNacimiento(txtFecha.getText());       
+        try {
+            dades.DataSource.getConnection("m03uf6_22_23","root","123456");
+            aplicacio.LogicaCliente.setCliente(cliente);
+            llistaObservableClientes.add(cliente);
+            tablaClientes.refresh();
+            limpiarCampos();
+        } catch (SQLException ex) {
+        }
+    
+    }
+    
+    /***
+     * Funcion para eliminar un usuario.
+     */
+    public void eliminarUsuario() throws SQLException{
+        Cliente cliente = (Cliente) tablaClientes.getSelectionModel().getSelectedItem();
+        LogicaCliente.deleteCliente(cliente);
+        llistaObservableClientes.remove(cliente);
+        tablaClientes.refresh();
+        limpiarCampos();
     }
     
 }
