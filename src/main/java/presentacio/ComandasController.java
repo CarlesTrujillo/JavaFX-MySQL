@@ -16,7 +16,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Region;
+import model.Comanda;
 
 /**
  * FXML Controller class
@@ -26,6 +28,8 @@ import javafx.scene.layout.Region;
 public class ComandasController implements Initializable {
     
     private ComandasLogic cl;
+    
+    private int idComandaSeleccionada;
     
      @FXML
     private TableView tablaComandas;
@@ -62,7 +66,12 @@ public class ComandasController implements Initializable {
 
     @FXML
     void onClick_borrar(ActionEvent event) {
-
+         try {
+              cl.borrarComanda(idComandaSeleccionada);
+              cl.borrarComandaEnTableView(idComandaSeleccionada);
+        }catch(SQLException ex){
+            mostrarAlertaError("Error carregant dades: " + ex.toString());
+        }
     }
 
     
@@ -92,6 +101,13 @@ public class ComandasController implements Initializable {
         }catch(SQLException ex){
             mostrarAlertaError("Error carregant dades: " + ex.toString());
         }
+         
+        tablaComandas.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                Comanda comandaSeleccionada = (Comanda) tablaComandas.getSelectionModel().getSelectedItem();
+                idComandaSeleccionada = comandaSeleccionada.getNumeroOrden();
+    }
+        });
     }
     
      private void mostrarAlertaError(String txt)

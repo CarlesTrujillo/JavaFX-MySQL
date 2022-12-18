@@ -32,6 +32,22 @@ public class ComandasLogic {
         this.llistaObservableComanda.setAll(ComandasDAO.carregarComndas(conn));
 
     }
+    
+     public void borrarComanda(int idComanda) throws SQLException {
+
+        ComandasDAO.borrarComanda(conn, idComanda);
+
+    }
+
+    public void borrarComandaEnTableView(int idComanda) {
+        for (Comanda comanda : llistaObservableComanda) {
+            if (comanda.getNumeroOrden() == idComanda) {
+                llistaObservableComanda.remove(comanda);
+                break;
+            }
+        }
+
+    }
 
     public ObservableList<Comanda> getLlistaObservableComanda() {
         return llistaObservableComanda;
