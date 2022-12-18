@@ -14,13 +14,13 @@
    <children>
       <AnchorPane prefHeight="451.0" prefWidth="670.0">
          <children>
-            <TableView layoutX="13.0" layoutY="121.0" prefHeight="260.0" prefWidth="693.0">
+            <TableView fx:id="tablaComandas" layoutX="13.0" layoutY="121.0" prefHeight="260.0" prefWidth="693.0">
               <columns>
-                <TableColumn prefWidth="135.0" text="Id de la comanda" />
-                <TableColumn prefWidth="157.0" text="Fecha de la comanda" />
-                  <TableColumn prefWidth="136.0" text="Fecha de entrega" />
-                  <TableColumn prefWidth="121.0" text="Fecha de envio" />
-                  <TableColumn prefWidth="143.0" text="Email del cliente" />
+                <TableColumn fx:id="idComanda" prefWidth="135.0" text="Id de la comanda" />
+                <TableColumn fx:id="fechaComanda" prefWidth="157.0" text="Fecha de la comanda" />
+                  <TableColumn fx:id="fechaEntrega" prefWidth="136.0" text="Fecha de entrega" />
+                  <TableColumn fx:id="fechaEnvio" prefWidth="121.0" text="Fecha de envio" />
+                  <TableColumn fx:id="emailCliente" prefWidth="143.0" text="Email del cliente" />
               </columns>
             </TableView>
             <Button fx:id="btn_salir" layoutX="7.0" layoutY="7.0" mnemonicParsing="false" onAction="#onClick_salir" text="Salir" />
