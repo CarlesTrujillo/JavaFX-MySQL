@@ -1,12 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 /**
  *
  * @author D
+ * @version 1.0
+ * 
+ * Clase Producto
  */
 public class Producto {
     
@@ -22,6 +21,14 @@ public class Producto {
         this.descripcion = descripcion;
         this.cantidadStock = cantidadStock;
         this.precio = precio;
+    }
+    
+    public Producto() {
+        this.code = 0;
+        this.nombre = "";
+        this.descripcion = "";
+        this.cantidadStock = 0;
+        this.precio = 0;
     }
 
     public int getCode() {

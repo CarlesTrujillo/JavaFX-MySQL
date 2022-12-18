@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.Productos">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.ProductosController">
     <children>
         <Button fx:id="btn_atras" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onClickAtras" prefHeight="30.0" prefWidth="70.0" text="Atrás" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
         <TableView layoutX="14.0" layoutY="144.0" prefHeight="201.0" prefWidth="437.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">

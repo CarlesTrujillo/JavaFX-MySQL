@@ -1,16 +1,16 @@
 package dades;
 
 import model.Cliente;
-import aplicacio.model.Producto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import model.Producto;
 
 /**
  *
- * @author Albert
+ * @author D
  * @version 1.0
  *
  * Clase para el Insert de datos en la BBDD
