@@ -4,7 +4,7 @@
  */
 package dades;
 
-import aplicacio.model.Cliente;
+import model.Cliente;
 import aplicacio.model.Producto;
 import java.sql.Connection;
 import java.sql.ResultSet;

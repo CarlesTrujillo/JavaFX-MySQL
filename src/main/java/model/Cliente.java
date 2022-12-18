@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package aplicacio.model;
+package model;
 
 /**
  *
@@ -10,12 +10,12 @@ package aplicacio.model;
  */
 public class Cliente {
     
-    String email;
-    String dni;
-    String nombre;
-    String telefono;
-    double creditoLimite;
-    String fechaNacimiento;
+    private String email;
+    private String dni;
+    private String nombre;
+    private String telefono;
+    private double creditoLimite;
+    private String fechaNacimiento;
 
     public Cliente(String email, String dni, String nombre, String telefono, double creditoLimite, String fechaNacimiento) {
         this.email = email;
@@ -25,8 +25,8 @@ public class Cliente {
         this.creditoLimite = creditoLimite;
         this.fechaNacimiento = fechaNacimiento;
     }
-
-    public Cliente() {
+    
+        public Cliente() {
         this.email = "";
         this.dni = "";
         this.nombre = "";

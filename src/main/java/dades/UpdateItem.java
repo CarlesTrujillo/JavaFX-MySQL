@@ -4,7 +4,7 @@
  */
 package dades;
 
-import aplicacio.model.Cliente;
+import model.Cliente;
 
 /**
  *

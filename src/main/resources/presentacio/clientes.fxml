@@ -14,14 +14,14 @@
    <children>
       <AnchorPane prefHeight="624.0" prefWidth="599.0">
          <children>
-            <TableView layoutX="13.0" layoutY="304.0" prefHeight="259.0" prefWidth="579.0">
+            <TableView fx:id="tablaClientes" layoutX="13.0" layoutY="304.0" prefHeight="259.0" prefWidth="579.0">
               <columns>
-                <TableColumn prefWidth="99.0" text="Email" />
-                <TableColumn prefWidth="51.0" text="Dni" />
-                  <TableColumn prefWidth="111.0" text="Nombre" />
-                  <TableColumn prefWidth="75.0" text="Telefono" />
-                  <TableColumn prefWidth="107.0" text="Credito" />
-                  <TableColumn prefWidth="131.0" text="Fecha Nacimiento" />
+                <TableColumn fx:id="emailCol" prefWidth="99.0" text="Email" />
+                <TableColumn fx:id="dniCol" prefWidth="51.0" text="Dni" />
+                  <TableColumn fx:id="nameCol" prefWidth="111.0" text="Nombre" />
+                  <TableColumn fx:id="phoneCol" prefWidth="75.0" text="Telefono" />
+                  <TableColumn fx:id="creditCol" prefWidth="107.0" text="Credito" />
+                  <TableColumn fx:id="birthCol" prefWidth="131.0" text="Fecha Nacimiento" />
               </columns>
             </TableView>
             <Button fx:id="btn_salir" layoutX="7.0" layoutY="7.0" mnemonicParsing="false" onAction="#onClick_salir" text="Salir" />
