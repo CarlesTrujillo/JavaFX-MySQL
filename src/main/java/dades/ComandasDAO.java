@@ -6,10 +6,12 @@ package dades;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import model.Comanda;
 
 /**
@@ -18,17 +20,6 @@ import model.Comanda;
  */
 public class ComandasDAO {
     
-     public static Connection connectarBD(String bd, String usuari, String password) throws SQLException
-    {
-        Connection ret;
-      
-        ret =  DriverManager.getConnection("jdbc:mysql://localhost:3306/"+bd+"?useUnicode=true&"
-                            + "useJDBCCompliantTimezoneShift=true&"
-                            + "useLegacyDatetimeCode=false&serverTimezone=UTC", usuari, password);   
-       
-        
-        return ret;
-    }
      
     public static ArrayList<Comanda> carregarComndas(Connection con) throws SQLException
     {
@@ -56,5 +47,22 @@ public class ComandasDAO {
           
        
         
+    }
+     
+    public static ArrayList<Comanda> carregarComndasFiltradasPorFecha(Connection con, Date fechaInicial, Date fechaFinal) throws SQLException
+    {
+        ArrayList<Comanda> ret = new ArrayList<>();
+        String sql = "SELECT * FROM orders WHERE orderDate BETWEEN ? AND ?";
+        PreparedStatement statement = con.prepareStatement(sql);
+        statement.setDate(1, new java.sql.Date(fechaInicial.getTime()));
+        statement.setDate(2, new java.sql.Date(fechaFinal.getTime()));
+        ResultSet rs = statement.executeQuery();
+        
+   
+        while (rs.next()) {
+            ret.add(new Comanda(rs.getInt("orderNumber"), rs.getString("orderDate"), rs.getString("requiredDate"), rs.getString("shippedDate"), rs.getString("customers_customerEmail")));
+        }
+        
+        return ret;
     }
 }

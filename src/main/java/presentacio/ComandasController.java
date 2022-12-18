@@ -7,7 +7,12 @@ package presentacio;
 import aplicacio.ComandasLogic;
 import java.net.URL;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
@@ -15,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Region;
@@ -31,14 +37,26 @@ public class ComandasController implements Initializable {
     
     private int idComandaSeleccionada;
     
-     @FXML
+    @FXML
+    private TextField fechaInicial;
+    
+    @FXML
+    private TextField fechaFinal;
+     
+    @FXML
     private TableView tablaComandas;
     
     @FXML 
     private TableColumn idComanda, fechaComanda, fechaEntrega, fechaEnvio, emailCliente;
     
     @FXML
+    private Button resetear;
+    
+    @FXML
     private Button btn_add;
+    
+      @FXML
+    private Button filtrar;
 
     @FXML
     private Button btn_salir;
@@ -55,7 +73,7 @@ public class ComandasController implements Initializable {
     }
 
     @FXML
-    void onClick_añadir(ActionEvent event) {
+    void onClick_anadir(ActionEvent event) {
 
     }
 
@@ -69,6 +87,27 @@ public class ComandasController implements Initializable {
          try {
               cl.borrarComanda(idComandaSeleccionada);
               cl.borrarComandaEnTableView(idComandaSeleccionada);
+        }catch(SQLException ex){
+            mostrarAlertaError("Error carregant dades: " + ex.toString());
+        }
+    }
+    
+    @FXML
+    void onClick_filtrar(ActionEvent event) {
+        
+        Date fechaIni = convertirADate(fechaInicial.getText());
+        Date fechaFi = convertirADate(fechaFinal.getText());
+        try {
+            cl.carregarComandasFiltradasPorFecha(fechaIni, fechaFi);
+        } catch (SQLException ex) {
+             mostrarAlertaError("Error carregant dades: " + ex.toString());
+        }
+    }
+    
+    @FXML
+    void onClick_resetear(ActionEvent event) {
+          try {
+             cl.carregarComandas();
         }catch(SQLException ex){
             mostrarAlertaError("Error carregant dades: " + ex.toString());
         }
@@ -110,6 +149,19 @@ public class ComandasController implements Initializable {
         });
     }
     
+    private Date convertirADate(String fecha){
+        
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        Date fechaDate = null;
+        try {
+            fechaDate = formato.parse(fecha);
+        } 
+        catch (ParseException ex) 
+        {
+            System.out.println(ex);
+        }
+        return fechaDate;
+    }
      private void mostrarAlertaError(String txt)
     {
         Alert alert = new Alert(Alert.AlertType.ERROR);

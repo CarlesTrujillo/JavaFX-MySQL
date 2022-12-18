@@ -5,8 +5,10 @@
 package aplicacio;
 
 import dades.ComandasDAO;
+import dades.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Comanda;
@@ -22,7 +24,7 @@ public class ComandasLogic {
 
     public ComandasLogic() throws SQLException {
 
-        conn = ComandasDAO.connectarBD("m03uf6_22_23", "root", "1234");
+        conn = DataSource.getConnection("m03uf6_22_23", "root", "1234");
 
         llistaObservableComanda = FXCollections.<Comanda>observableArrayList();
     }
@@ -46,6 +48,12 @@ public class ComandasLogic {
                 break;
             }
         }
+
+    }
+    
+    public void carregarComandasFiltradasPorFecha(Date fechaInicial, Date fechaFinal) throws SQLException {
+
+        this.llistaObservableComanda.setAll(ComandasDAO.carregarComndasFiltradasPorFecha(conn, fechaInicial, fechaFinal));
 
     }
 
