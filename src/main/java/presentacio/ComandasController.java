@@ -4,6 +4,7 @@
  */
 package presentacio;
 
+import aplicacio.ComandaDetailsLogic;
 import aplicacio.ComandasLogic;
 import java.io.IOException;
 import java.net.URL;
@@ -39,6 +40,8 @@ import model.Comanda;
 public class ComandasController implements Initializable {
     
     private ComandasLogic cl;
+    
+    private ComandaDetailsLogic cdl;
     
     private int idComandaSeleccionada;
     
@@ -98,11 +101,14 @@ public class ComandasController implements Initializable {
         stage.setScene(new Scene(root));
         stage.setResizable(false);
         stage.show();
+        
+      
     }
 
     @FXML
     void onClick_borrar(ActionEvent event) {
          try {
+              cdl.borrarTodasComandaDetails(idComandaSeleccionada);
               cl.borrarComanda(idComandaSeleccionada);
               cl.borrarComandaEnTableView(idComandaSeleccionada);
         }catch(SQLException ex){
@@ -139,7 +145,7 @@ public class ComandasController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             cl = new ComandasLogic();
-
+            cdl = new ComandaDetailsLogic();
             tablaComandas.setItems(cl.getLlistaObservableComanda());
         }catch(SQLException ex){
             mostrarAlertaError("Error carregant dades: " + ex.toString());

@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -81,8 +82,7 @@ public class ClientesController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            
+        try {    
             ArrayList<Cliente> clientes = aplicacio.LogicaCliente.getClientes();
                         
             for (Cliente s : clientes) {
@@ -96,7 +96,7 @@ public class ClientesController implements Initializable {
             birthCol.setCellValueFactory(new PropertyValueFactory<>("fechaNacimiento"));
             tablaClientes.setItems(llistaObservableClientes);
             dades.DataSource.getConnection("m03uf6_22_23","root","123456");
-        
+            
         } catch (SQLException ex) {
             
 //            Logger.getLogger(ClientesController.class.getName()).log(Level.SEVERE, null, ex);
@@ -132,7 +132,6 @@ public class ClientesController implements Initializable {
     
     /***
      * Hotkey para el boton de borrado.
-     * 
      */
     @FXML
     void onKey_Delete(KeyEvent event) throws SQLException {
@@ -146,7 +145,6 @@ public class ClientesController implements Initializable {
      * 
      * @param event 
      */
-
     @FXML
     void onItem_Selected(MouseEvent event) {
         Cliente cliente = (Cliente) tablaClientes.getSelectionModel().getSelectedItem();
@@ -157,6 +155,8 @@ public class ClientesController implements Initializable {
             txtNombre.setText(cliente.getNombre());
             txtCredito.setText(cliente.getCreditoLimite() + "");
             txtFecha.setText(cliente.getFechaNacimiento());
+        }else{
+        limpiarCampos();
         }
     }
 
@@ -168,16 +168,31 @@ public class ClientesController implements Initializable {
     private void onClick_añadir(ActionEvent event){
         insertarUsuario();
     }
+    
     /***
      * Accion para el boton de modificar usuario.
      * 
      * @param event 
      */
     @FXML
-    private void onClick_modificar(ActionEvent event) {
-    
-    
+    private void onClick_modificar(ActionEvent event) throws SQLException {
+        Cliente cliente = (Cliente) tablaClientes.getSelectionModel().getSelectedItem();
+        if(cliente != null){
+            int posicion = tablaClientes.getSelectionModel().getSelectedIndex();
+            Cliente nuevoCliente = new Cliente();
+            nuevoCliente.setNombre(txtNombre.getText());
+            nuevoCliente.setDni(txtDni.getText());
+            nuevoCliente.setEmail(txtEmail.getText());
+            nuevoCliente.setFechaNacimiento(txtFecha.getText());
+            nuevoCliente.setCreditoLimite(Double.parseDouble(txtCredito.getText()));
+            nuevoCliente.setTelefono(txtTelefono.getText());
+            aplicacio.LogicaCliente.updateCliente(nuevoCliente);
+            llistaObservableClientes.set(posicion, nuevoCliente);
+            tablaClientes.refresh();
+        }
     }
+    
+    
 
     /***
      * Accion para el boton de borrar usuario.
@@ -190,7 +205,19 @@ public class ClientesController implements Initializable {
         eliminarUsuario();
     }
     
+    @FXML
+    void onClick_Pane(ActionEvent event) {
+        limpiarCampos();
+    }
     
+    
+    /***
+     * Funcion para hacer la comprobacion de la edad.
+     * 
+     * @param fecha
+     * @return
+     * @throws SQLException 
+     */
     public static boolean comprobarEdad(String fecha) throws SQLException{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fecha1 = LocalDate.parse(fecha, formatter);
@@ -208,6 +235,7 @@ public class ClientesController implements Initializable {
     
     /***
      * Funcion para limpiar los campos de texto despues de un Insert, Update, Delete.
+     * 
      */
     public void limpiarCampos(){
         txtEmail.clear();
@@ -237,7 +265,6 @@ public class ClientesController implements Initializable {
             limpiarCampos();
         } catch (SQLException ex) {
         }
-    
     }
     
     /***

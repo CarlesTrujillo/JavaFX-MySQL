@@ -36,5 +36,9 @@ public class LogicaCliente {
         return edad;
     }
     
+    public static void updateCliente(Cliente cliente) throws SQLException{
+    dades.clienteDAO.updateCliente(cliente);
+    }
+    
     
 }

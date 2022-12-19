@@ -12,7 +12,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="625.0" prefWidth="599.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.ClientesController">
    <children>
-      <AnchorPane onKeyPressed="#onKey_Insert" prefHeight="624.0" prefWidth="599.0">
+      <AnchorPane onKeyPressed="#onKey_Insert" onMouseClicked="#onClick_Pane" prefHeight="624.0" prefWidth="599.0">
          <children>
             <TableView fx:id="tablaClientes" layoutX="13.0" layoutY="304.0" onKeyPressed="#onKey_Delete" onMouseClicked="#onItem_Selected" prefHeight="259.0" prefWidth="579.0">
               <columns>

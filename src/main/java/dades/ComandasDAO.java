@@ -42,7 +42,6 @@ public class ComandasDAO {
          Statement sentencia;
          String nomBD = conn.getCatalog();
          sentencia = conn.createStatement();
-         sentencia.executeUpdate("DELETE FROM "+nomBD+".orderdetails WHERE orderNumber = " + idComanda);
          sentencia.executeUpdate("DELETE FROM "+nomBD+".orders WHERE orderNumber = " + idComanda);
           
        
