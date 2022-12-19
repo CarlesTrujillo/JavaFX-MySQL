@@ -14,11 +14,11 @@
    <children>
       <AnchorPane prefHeight="659.0" prefWidth="630.0">
          <children>
-            <TableView layoutX="13.0" layoutY="348.0" prefHeight="250.0" prefWidth="579.0">
+            <TableView fx:id="tablaOrderDetails" layoutX="13.0" layoutY="348.0" prefHeight="250.0" prefWidth="579.0">
               <columns>
-                <TableColumn prefWidth="171.0" text="Nombre del producto" />
-                <TableColumn prefWidth="211.0" text="Cantidad pedida" />
-                  <TableColumn prefWidth="190.0" text="Precio del producto único" />
+                <TableColumn fx:id="idProducto" prefWidth="171.0" text="Nombre del producto" />
+                <TableColumn fx:id="cantidadPedida" prefWidth="211.0" text="Cantidad pedida" />
+                  <TableColumn fx:id="precioProductoUnico" prefWidth="190.0" text="Precio del producto único" />
               </columns>
             </TableView>
             <Button fx:id="btn_salir" layoutX="7.0" layoutY="7.0" mnemonicParsing="false" onAction="#onClick_salir" text="Salir" />

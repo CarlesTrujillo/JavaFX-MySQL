@@ -5,6 +5,7 @@
 package presentacio;
 
 import aplicacio.ComandasLogic;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -16,6 +17,9 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -24,6 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Region;
+import javafx.stage.Stage;
 import model.Comanda;
 
 /**
@@ -79,7 +84,20 @@ public class ComandasController implements Initializable {
 
     @FXML
     void onClick_modificar(ActionEvent event) {
-
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("mostaranadircomanda.fxml")); 
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(ComandasController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        MostaranadircomandaController  mostaranadircomandaController = fxmlLoader.getController();
+        mostaranadircomandaController.setidComanda(Integer.toString(idComandaSeleccionada));
+            
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setResizable(false);
+        stage.show();
     }
 
     @FXML

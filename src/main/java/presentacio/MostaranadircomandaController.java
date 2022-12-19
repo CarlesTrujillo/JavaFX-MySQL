@@ -4,13 +4,21 @@
  */
 package presentacio;
 
+import aplicacio.ComandaDetailsLogic;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Region;
+import model.ComandaDetails;
 
 
 /**
@@ -19,12 +27,21 @@ import javafx.scene.control.TextField;
  * @author andre
  */
 public class MostaranadircomandaController implements Initializable {
-
-     @FXML
+    
+    private String idComanda;
+    private ComandaDetailsLogic cdl;
+    
+    @FXML
     private Button btn_add;
 
     @FXML
     private Button btn_salir;
+    
+    @FXML
+    private TableView tablaOrderDetails;
+    
+     @FXML 
+    private TableColumn idProducto, cantidadPedida, precioProductoUnico;
 
     @FXML
     private TextField txtNombre;
@@ -75,7 +92,42 @@ public class MostaranadircomandaController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+       try {
+            cdl = new ComandaDetailsLogic();
+            tablaOrderDetails.setItems(cdl.getLlistaObservableComandaDetails());
+            
+        }catch(SQLException ex){
+            mostrarAlertaError("Error carregant dades: " + ex.toString());
+        }catch (Exception ex){
+            mostrarAlertaError("Error inicialitzant capa lógica: " + ex.toString());
+        }
+        
+        idProducto.setCellValueFactory(new PropertyValueFactory<>("CodigoProducto"));
+        cantidadPedida.setCellValueFactory(new PropertyValueFactory<>("CantidadPedida"));
+        precioProductoUnico.setCellValueFactory(new PropertyValueFactory<>("PrecioProducto"));
     }    
+
+    public void setidComanda(String idComanda) {
+        this.idComanda = idComanda;
+        carrgarComandaDetails();
+    }
+    
+    public void carrgarComandaDetails(){
+         try {
+             cdl.carregarComandaDetails(idComanda);
+        }catch(SQLException ex){
+            mostrarAlertaError("Error carregant dades: " + ex.toString());
+        }
+    }
+    
+     private void mostrarAlertaError(String txt)
+    {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.setTitle("ERROR");
+        alert.setContentText(txt);
+
+        alert.showAndWait();
+    }
     
 }
