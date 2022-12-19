@@ -122,7 +122,7 @@ public class ComandasController implements Initializable {
         Date fechaIni = convertirADate(fechaInicial.getText());
         Date fechaFi = convertirADate(fechaFinal.getText());
         try {
-            cl.carregarComandasFiltradasPorFecha(fechaIni, fechaFi);
+            cl.caregarComandasFiltradasPorFecha(fechaIni, fechaFi);
         } catch (SQLException ex) {
              mostrarAlertaError("Error carregant dades: " + ex.toString());
         }
@@ -131,7 +131,7 @@ public class ComandasController implements Initializable {
     @FXML
     void onClick_resetear(ActionEvent event) {
           try {
-             cl.carregarComandas();
+             cl.caregarComandas();
         }catch(SQLException ex){
             mostrarAlertaError("Error carregant dades: " + ex.toString());
         }
@@ -160,7 +160,7 @@ public class ComandasController implements Initializable {
         emailCliente.setCellValueFactory(new PropertyValueFactory<>("EmailCliente"));
         
          try {
-             cl.carregarComandas();
+             cl.caregarComandas();
         }catch(SQLException ex){
             mostrarAlertaError("Error carregant dades: " + ex.toString());
         }

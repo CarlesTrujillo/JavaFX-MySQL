@@ -28,9 +28,9 @@ public class ComandaDetailsLogic {
         llistaObservableComanda = FXCollections.<ComandaDetails>observableArrayList();
     }
     
-     public void carregarComandaDetails(String idComanda) throws SQLException {
+     public void cargarComandaDetails(String idComanda) throws SQLException {
 
-        this.llistaObservableComanda.setAll(ComandasDetailsDAO.carregarComndasDetails(conn, idComanda));
+        this.llistaObservableComanda.setAll(ComandasDetailsDAO.cargarComndasDetails(conn, idComanda));
 
     }
     

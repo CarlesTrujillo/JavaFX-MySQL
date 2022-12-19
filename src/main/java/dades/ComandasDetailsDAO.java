@@ -17,7 +17,7 @@ import model.ComandaDetails;
  */
 public class ComandasDetailsDAO {
     
-    public static ArrayList<ComandaDetails> carregarComndasDetails(Connection con, String idComada) throws SQLException
+    public static ArrayList<ComandaDetails> cargarComndasDetails(Connection con, String idComada) throws SQLException
     {
         ArrayList<ComandaDetails> ret = new ArrayList<>();
         

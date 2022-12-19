@@ -21,7 +21,7 @@ import model.Comanda;
 public class ComandasDAO {
     
      
-    public static ArrayList<Comanda> carregarComndas(Connection con) throws SQLException
+    public static ArrayList<Comanda> cargarComndas(Connection con) throws SQLException
     {
         ArrayList<Comanda> ret = new ArrayList<>();
         
@@ -42,13 +42,10 @@ public class ComandasDAO {
          Statement sentencia;
          String nomBD = conn.getCatalog();
          sentencia = conn.createStatement();
-         sentencia.executeUpdate("DELETE FROM "+nomBD+".orders WHERE orderNumber = " + idComanda);
-          
-       
-        
+         sentencia.executeUpdate("DELETE FROM "+nomBD+".orders WHERE orderNumber = " + idComanda);             
     }
      
-    public static ArrayList<Comanda> carregarComndasFiltradasPorFecha(Connection con, Date fechaInicial, Date fechaFinal) throws SQLException
+    public static ArrayList<Comanda> cargarComndasFiltradasPorFecha(Connection con, Date fechaInicial, Date fechaFinal) throws SQLException
     {
         ArrayList<Comanda> ret = new ArrayList<>();
         String sql = "SELECT * FROM orders WHERE orderDate BETWEEN ? AND ?";
@@ -57,11 +54,23 @@ public class ComandasDAO {
         statement.setDate(2, new java.sql.Date(fechaFinal.getTime()));
         ResultSet rs = statement.executeQuery();
         
-   
         while (rs.next()) {
             ret.add(new Comanda(rs.getInt("orderNumber"), rs.getString("orderDate"), rs.getString("requiredDate"), rs.getString("shippedDate"), rs.getString("customers_customerEmail")));
         }
         
+        return ret;
+    }
+    
+    public static Comanda cargarUnaComanda(Connection con, String idCmanda) throws SQLException {
+        Comanda ret = null;
+        Statement sentencia;
+        
+        sentencia = con.createStatement();
+        sentencia.executeQuery("SELECT * FROM orders WHERE orderNumber = " + idCmanda);
+        ResultSet rs = sentencia.getResultSet();
+        while (rs.next()) {
+          ret = new Comanda(rs.getInt("orderNumber"), rs.getString("orderDate"), rs.getString("requiredDate"), rs.getString("shippedDate"), rs.getString("customers_customerEmail"));
+        }
         return ret;
     }
 }

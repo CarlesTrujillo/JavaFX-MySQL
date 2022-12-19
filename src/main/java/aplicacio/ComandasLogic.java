@@ -29,9 +29,9 @@ public class ComandasLogic {
         llistaObservableComanda = FXCollections.<Comanda>observableArrayList();
     }
     
-    public void carregarComandas() throws SQLException {
+    public void caregarComandas() throws SQLException {
 
-        this.llistaObservableComanda.setAll(ComandasDAO.carregarComndas(conn));
+        this.llistaObservableComanda.setAll(ComandasDAO.cargarComndas(conn));
 
     }
     
@@ -51,10 +51,17 @@ public class ComandasLogic {
 
     }
     
-    public void carregarComandasFiltradasPorFecha(Date fechaInicial, Date fechaFinal) throws SQLException {
+    public void caregarComandasFiltradasPorFecha(Date fechaInicial, Date fechaFinal) throws SQLException {
 
-        this.llistaObservableComanda.setAll(ComandasDAO.carregarComndasFiltradasPorFecha(conn, fechaInicial, fechaFinal));
+        this.llistaObservableComanda.setAll(ComandasDAO.cargarComndasFiltradasPorFecha(conn, fechaInicial, fechaFinal));
 
+    }
+    
+    public Comanda cargarUnaComanda(String idComanda) throws SQLException{
+        
+        Comanda ret;
+        ret = ComandasDAO.cargarUnaComanda(conn, idComanda);
+        return ret;
     }
 
     public ObservableList<Comanda> getLlistaObservableComanda() {

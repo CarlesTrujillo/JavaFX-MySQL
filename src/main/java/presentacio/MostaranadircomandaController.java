@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
@@ -5,6 +6,7 @@
 package presentacio;
 
 import aplicacio.ComandaDetailsLogic;
+import aplicacio.ComandasLogic;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -18,7 +20,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
-import model.ComandaDetails;
+import model.Comanda;
+
 
 
 /**
@@ -29,7 +32,10 @@ import model.ComandaDetails;
 public class MostaranadircomandaController implements Initializable {
     
     private String idComanda;
+    
     private ComandaDetailsLogic cdl;
+    
+    private ComandasLogic cl;
     
     @FXML
     private Button btn_add;
@@ -40,18 +46,9 @@ public class MostaranadircomandaController implements Initializable {
     @FXML
     private TableView tablaOrderDetails;
     
-     @FXML 
+    @FXML 
     private TableColumn idProducto, cantidadPedida, precioProductoUnico;
-
-    @FXML
-    private TextField txtNombre;
-
-    @FXML
-    private TextField txtTelefono;
-
-    @FXML
-    private TextField txtEmail;
-
+     
     @FXML
     private Button btn_modificar;
 
@@ -59,7 +56,16 @@ public class MostaranadircomandaController implements Initializable {
     private Button btn_borrar;
 
     @FXML
-    private TextField txtDni;
+    private TextField fechaEnvio;
+
+    @FXML
+    private TextField emailCliente;
+
+    @FXML
+    private TextField fechaOrden;
+
+    @FXML
+    private TextField fechaEntrega;
 
     @FXML
     private TextField txtCredito;
@@ -93,6 +99,7 @@ public class MostaranadircomandaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
        try {
+            cl = new ComandasLogic();
             cdl = new ComandaDetailsLogic();
             tablaOrderDetails.setItems(cdl.getLlistaObservableComandaDetails());
             
@@ -113,11 +120,27 @@ public class MostaranadircomandaController implements Initializable {
     }
     
     public void carrgarComandaDetails(){
+        
          try {
-             cdl.carregarComandaDetails(idComanda);
+             Comanda comanda = cl.cargarUnaComanda(idComanda);
+             cargarDatosComanda(comanda);
+             cdl.cargarComandaDetails(idComanda);
         }catch(SQLException ex){
             mostrarAlertaError("Error carregant dades: " + ex.toString());
         }
+    }
+    
+    public void cargarDatosComanda(Comanda comanda) {
+        
+        fechaOrden.setText(quitarHoraDEFechas(comanda.getFechaOrden()));
+        fechaEntrega.setText(quitarHoraDEFechas(comanda.getFechaRequerida()));
+        fechaEnvio.setText(quitarHoraDEFechas(comanda.getFechaEnvio()));
+        emailCliente.setText(comanda.getEmailCliente());
+        emailCliente.setDisable(true);
+    }
+    
+    public String quitarHoraDEFechas(String fecha){
+        return fecha.split(" ")[0];
     }
     
      private void mostrarAlertaError(String txt)
