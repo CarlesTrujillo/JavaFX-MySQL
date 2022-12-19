@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import model.Producto;
 
 /**
  *
@@ -21,9 +20,14 @@ public class clienteDAO {
     public static ArrayList<Cliente> muestraClientes() throws SQLException {
         Connection con = DataSource.getConnection("m03uf6_22_23", "root", "123456");
         ArrayList<Cliente> clientes = new ArrayList<>();
-        Statement stmt = con.createStatement();
-        String query = "select * from customers";
-        ResultSet rs = stmt.executeQuery(query);
+        Statement sentencia;
+        
+        sentencia = con.createStatement();
+        sentencia.executeQuery("select * from customers");
+        ResultSet rs = sentencia.getResultSet();
+        //Statement stmt = con.createStatement();
+        //String query = "select * from customers";
+        //PreparedStatement rs = stmt.executeUpdate(query);
         while (rs.next()) {
             Cliente cliente = new Cliente();
             cliente.setEmail(rs.getString("customerEmail"));
@@ -77,7 +81,22 @@ public class clienteDAO {
         //PreparedStatement preparedStatement = con.prepareStatement(sqlStr);
         //preparedStatement.setString(0,cliente.getEmail());
         sentencia.executeUpdate(sqlStr);
+                
+    }
+    
+        // Insert de Clientes en la BBDD
+    public static void updateCliente(Cliente cliente) throws SQLException {
+        Connection conn = DataSource.getConnection("m03uf6_22_23", "root", "123456");
+        String sqlQuery = "update customers set idCard = ?,customerName = ?,phone = ?,creditLimit = ?,birthDate = ? WHERE customerEmail = ?;";
         
+        PreparedStatement preparedStatement = conn.prepareStatement(sqlQuery);
+        preparedStatement.setString(1, cliente.getDni());
+        preparedStatement.setString(2, cliente.getNombre());
+        preparedStatement.setString(3, cliente.getTelefono());
+        preparedStatement.setDouble(4, cliente.getCreditoLimite());
+        preparedStatement.setString(5, cliente.getFechaNacimiento());        
+        preparedStatement.setString(6, cliente.getEmail());
+        preparedStatement.executeUpdate();   
         
     }
     
