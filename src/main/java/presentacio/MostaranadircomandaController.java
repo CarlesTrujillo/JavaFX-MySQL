@@ -22,8 +22,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Region;
 import model.Comanda;
+import model.ComandaDetails;
 
 
 
@@ -33,6 +35,9 @@ import model.Comanda;
  * @author andre
  */
 public class MostaranadircomandaController implements Initializable {
+    private int idComandaSeleccionada;
+    
+    private int idProductoSeleccionado;
     
     private String idComanda;
     
@@ -104,13 +109,21 @@ public class MostaranadircomandaController implements Initializable {
     }
 
     @FXML
-    void onClick_modificar(ActionEvent event) {
+    void onClick_guardar(ActionEvent event) {
 
     }
 
     @FXML
     void onClick_borrar(ActionEvent event) {
-
+         Double precioTot = Double.parseDouble(precioTotal.getText().split(" ")[0]);
+        try {
+            Double ret = cdl.restarImporteDeComandaDetailsEliminada(precioTot, idComandaSeleccionada, idProductoSeleccionado);
+            cdl.borrarUnaComandaDetails(idComandaSeleccionada, idProductoSeleccionado);
+            cdl.borrarUnaComandaDetailsdeTableview(idComandaSeleccionada, idProductoSeleccionado);
+            precioTotal.setText(Double.toString(ret) + " €");
+        } catch (SQLException ex) {
+           mostrarAlertaError("Error al borrar el ComandaDetails: " + ex.toString());
+        }
     }
     
     /**
@@ -132,6 +145,14 @@ public class MostaranadircomandaController implements Initializable {
         idProducto.setCellValueFactory(new PropertyValueFactory<>("CodigoProducto"));
         cantidadPedida.setCellValueFactory(new PropertyValueFactory<>("CantidadPedida"));
         precioProductoUnico.setCellValueFactory(new PropertyValueFactory<>("PrecioProducto"));
+        
+         tablaOrderDetails.setOnMouseClicked(event -> {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+                ComandaDetails comandaDetailsSeleccionada = (ComandaDetails) tablaOrderDetails.getSelectionModel().getSelectedItem();
+                idComandaSeleccionada = comandaDetailsSeleccionada.getNumeroComanda();
+                idProductoSeleccionado = comandaDetailsSeleccionada.getCodigoProducto();
+    }
+        });
     }    
 
     public void setidComanda(String idComanda) {
@@ -146,7 +167,7 @@ public class MostaranadircomandaController implements Initializable {
              cargarDatosComanda(comanda);
              cdl.cargarComandaDetails(idComanda);
               double importe = cdl.importe();
-             precioTotal.setText(Double.toString(importe) + "€");
+             precioTotal.setText(Double.toString(importe) + " €");
         }catch(SQLException ex){
             mostrarAlertaError("Error carregant dades: " + ex.toString());
         }

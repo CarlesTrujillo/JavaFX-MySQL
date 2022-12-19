@@ -40,4 +40,12 @@ public class ComandasDetailsDAO {
          sentencia = conn.createStatement();
          sentencia.executeUpdate("DELETE FROM "+nomBD+".orderdetails WHERE orderNumber = " + idComanda);
     }
+    
+     public static void borrarUnaComandaDetails(Connection conn , int idComanda, int idProducto) throws SQLException
+    {
+         Statement sentencia;
+         String nomBD = conn.getCatalog();
+         sentencia = conn.createStatement();
+         sentencia.executeUpdate("DELETE FROM "+nomBD+".orderdetails WHERE orderNumber = " + idComanda + " AND productCode = " + idProducto);
+    } 
 }

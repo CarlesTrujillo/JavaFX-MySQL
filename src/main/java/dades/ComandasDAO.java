@@ -51,6 +51,8 @@ public class ComandasDAO {
         return ret;
     }
     
+    
+    
     public static long minShippingHours(Connection con) throws SQLException{
         long ret = 0;
         Statement sentencia;

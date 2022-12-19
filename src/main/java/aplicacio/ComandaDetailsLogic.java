@@ -39,6 +39,34 @@ public class ComandaDetailsLogic {
         ComandasDetailsDAO.borrarTodasComandaDetails(conn, idComanda);
     }
     
+     public void borrarUnaComandaDetails(int idComanda, int idProducto) throws SQLException {
+        
+        ComandasDetailsDAO.borrarUnaComandaDetails(conn, idComanda, idProducto);
+    }
+    
+    public void borrarUnaComandaDetailsdeTableview(int idComanda, int idProducto){
+        
+        for (ComandaDetails comandaDetails : llistaObservableComandaDetails) {
+            if (comandaDetails.getNumeroComanda() == idComanda && comandaDetails.getCodigoProducto() == idProducto) {
+                llistaObservableComandaDetails.remove(comandaDetails);
+                break;
+            }
+        }
+    }
+    
+    public Double restarImporteDeComandaDetailsEliminada(Double importeTotal, int idComanda, int idProducto){
+        double ret = 0;
+          for (ComandaDetails comandaDetails : llistaObservableComandaDetails) {
+               if (comandaDetails.getNumeroComanda() == idComanda && comandaDetails.getCodigoProducto() == idProducto) {
+                    double precio = (double) comandaDetails.getPrecioProducto() * comandaDetails.getCantidadPedida();
+                   importeTotal -= precio;
+                   ret = importeTotal;
+               }
+          }
+          
+          return ret;
+    }
+    
      public Boolean listaVacia() {
          
         return llistaObservableComandaDetails.isEmpty();
