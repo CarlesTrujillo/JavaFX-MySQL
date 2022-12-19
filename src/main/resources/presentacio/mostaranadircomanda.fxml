@@ -10,9 +10,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="665.0" prefWidth="599.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.MostaranadircomandaController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="713.0" prefWidth="599.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.MostaranadircomandaController">
    <children>
-      <AnchorPane prefHeight="659.0" prefWidth="630.0">
+      <AnchorPane prefHeight="714.0" prefWidth="599.0">
          <children>
             <TableView fx:id="tablaOrderDetails" layoutX="13.0" layoutY="348.0" prefHeight="250.0" prefWidth="579.0">
               <columns>
@@ -22,9 +22,9 @@
               </columns>
             </TableView>
             <Button fx:id="btn_salir" layoutX="7.0" layoutY="7.0" mnemonicParsing="false" onAction="#onClick_salir" text="Salir" />
-            <Button fx:id="btn_add" layoutX="14.0" layoutY="606.0" mnemonicParsing="false" onAction="#onClick_anadir" prefHeight="39.0" prefWidth="170.0" text="Añadir" />
-            <Button fx:id="btn_modificar" layoutX="200.0" layoutY="606.0" mnemonicParsing="false" onAction="#onClick_modificar" prefHeight="39.0" prefWidth="183.0" text="Borrar" />
-            <Button fx:id="btn_borrar" layoutX="391.0" layoutY="606.0" mnemonicParsing="false" onAction="#onClick_borrar" prefHeight="39.0" prefWidth="196.0" text="Guardar cambios" />
+            <Button fx:id="btn_add" layoutX="27.0" layoutY="653.0" mnemonicParsing="false" onAction="#onClick_anadir" prefHeight="39.0" prefWidth="170.0" text="Añadir" />
+            <Button fx:id="btn_modificar" layoutX="200.0" layoutY="653.0" mnemonicParsing="false" onAction="#onClick_modificar" prefHeight="39.0" prefWidth="183.0" text="Borrar" />
+            <Button fx:id="btn_borrar" layoutX="389.0" layoutY="653.0" mnemonicParsing="false" onAction="#onClick_borrar" prefHeight="39.0" prefWidth="196.0" text="Guardar cambios" />
             <TextField fx:id="fechaOrden" layoutX="356.0" layoutY="14.0" />
             <TextField fx:id="fechaEntrega" layoutX="356.0" layoutY="64.0" />
             <TextField fx:id="fechaEnvio" layoutX="356.0" layoutY="109.0" />
@@ -38,6 +38,8 @@
             <Label layoutX="112.0" layoutY="203.0" prefHeight="39.0" prefWidth="162.0" text="Añadir nuevo producto" />
             <Label layoutX="108.0" layoutY="249.0" prefHeight="39.0" prefWidth="196.0" text="Cantidad del nuevo producto" />
             <Button layoutX="119.0" layoutY="299.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="162.0" text="Añadir producto" />
+            <Label layoutX="345.0" layoutY="607.0" prefHeight="39.0" prefWidth="88.0" text="Precio Total:" />
+            <Label fx:id="precioTotal" layoutX="433.0" layoutY="607.0" prefHeight="39.0" prefWidth="88.0" />
          </children>
       </AnchorPane>
    </children>

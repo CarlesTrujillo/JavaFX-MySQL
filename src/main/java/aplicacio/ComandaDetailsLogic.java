@@ -44,6 +44,17 @@ public class ComandaDetailsLogic {
         return llistaObservableComandaDetails.isEmpty();
     }
      
+    public double importe(){
+        double ret = 0;
+       
+        for (ComandaDetails comandaDetails : llistaObservableComandaDetails) {
+                double precio = (double) comandaDetails.getPrecioProducto() * comandaDetails.getCantidadPedida();
+                ret += precio;
+            }
+        return ret;
+        }
+    
+     
     public ObservableList<ComandaDetails> getLlistaObservableComandaDetails() {
         return llistaObservableComandaDetails;
     }

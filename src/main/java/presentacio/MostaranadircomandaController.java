@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -56,6 +57,9 @@ public class MostaranadircomandaController implements Initializable {
 
     @FXML
     private Button btn_borrar;
+    
+    @FXML
+    private Label precioTotal;
 
     @FXML
     private TextField fechaEnvio;
@@ -90,6 +94,7 @@ public class MostaranadircomandaController implements Initializable {
         
         try {
              int ret = cl.crearComanda(listaVacia, fechaOrden.getText(), fechaEntrega.getText(), fechaEnvio.getText(), emailCliente.getText());
+             
              if (ret == 1) {
                  mostrarAlertaError("No se puede crear la comanda porque la diferencia de horas entre la fecha de la creación de la comanda y la fecha prevista de entrega es menor a minShippingHours");
             }
@@ -140,6 +145,8 @@ public class MostaranadircomandaController implements Initializable {
              Comanda comanda = cl.cargarUnaComanda(idComanda);
              cargarDatosComanda(comanda);
              cdl.cargarComandaDetails(idComanda);
+              double importe = cdl.importe();
+             precioTotal.setText(Double.toString(importe) + "€");
         }catch(SQLException ex){
             mostrarAlertaError("Error carregant dades: " + ex.toString());
         }
