@@ -12,6 +12,11 @@ import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Comanda;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  *
@@ -27,6 +32,34 @@ public class ComandasLogic {
         conn = DataSource.getConnection("m03uf6_22_23", "root", "1234");
 
         llistaObservableComanda = FXCollections.<Comanda>observableArrayList();
+    }
+    
+    public int crearComanda(Boolean permitir, String fechaOrden, String fechaEntrega, String fechaEnvio, String emailCliente) throws SQLException{
+       int ret = 0;
+        if (!permitir) {
+            long diferenciaHoras = restarFechas(fechaOrden, fechaEntrega);
+            long minShippingHours = minShippingHours();
+            if(diferenciaHoras > minShippingHours){
+                int idComanda = obtenerUltimaComanda() + 1;
+                Comanda comanda = new Comanda(idComanda, fechaOrden, fechaEntrega, fechaEnvio, emailCliente);
+                ComandasDAO.anadirUnaComanda(conn, comanda);
+            } else{
+                ret = 1;
+            }
+        }
+        
+        return ret;
+    }
+    
+    public long minShippingHours(){
+         long ret = 0;
+        try {
+            ret = ComandasDAO.minShippingHours(conn);
+        } catch (SQLException ex) {
+            Logger.getLogger(ComandasLogic.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return ret;
     }
     
     public void caregarComandas() throws SQLException {
@@ -63,9 +96,31 @@ public class ComandasLogic {
         ret = ComandasDAO.cargarUnaComanda(conn, idComanda);
         return ret;
     }
+    
+    public int obtenerUltimaComanda() throws SQLException{
+        
+        int ret;
+        ret = ComandasDAO.obtenerUltimaComanda(conn);
+        return ret;
+    }
 
     public ObservableList<Comanda> getLlistaObservableComanda() {
         return llistaObservableComanda;
+    }
+    
+    public long restarFechas(String fechasOrden, String fechaEntrega){
+        
+        fechasOrden += "T00:00:00Z";
+        fechaEntrega += "T00:00:00Z";
+        
+        Instant fechaIni = Instant.parse(fechasOrden);
+        Instant fechaFi = Instant.parse(fechaEntrega);
+        
+        Duration duration = Duration.between(fechaIni, fechaFi);
+        long hours = duration.toHours(); 
+        
+        return hours;
+        
     }
 
 }

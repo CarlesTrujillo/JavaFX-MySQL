@@ -20,7 +20,21 @@ import model.Comanda;
  */
 public class ComandasDAO {
     
-     
+    public static void anadirUnaComanda(Connection con, Comanda comanda) throws SQLException {
+    
+        String sqlQuery;
+        String nomBD = con.getCatalog();
+        
+        sqlQuery = "INSERT INTO "+nomBD+".orders (orderDate, requiredDate, shippedDate, customers_customerEmail) VALUES (?,?,?,?);";
+        
+        PreparedStatement preparedStatement = con.prepareStatement(sqlQuery);
+        preparedStatement.setString(1, comanda.getFechaOrden());
+        preparedStatement.setString(2, comanda.getFechaRequerida());
+        preparedStatement.setString(3, comanda.getFechaEnvio());
+        preparedStatement.setString(4, comanda.getEmailCliente());
+        
+        preparedStatement.executeUpdate();
+    }  
     public static ArrayList<Comanda> cargarComndas(Connection con) throws SQLException
     {
         ArrayList<Comanda> ret = new ArrayList<>();
@@ -36,6 +50,36 @@ public class ComandasDAO {
         
         return ret;
     }
+    
+    public static long minShippingHours(Connection con) throws SQLException{
+        long ret = 0;
+        Statement sentencia;
+        
+        sentencia = con.createStatement();
+        sentencia.executeQuery("SELECT * FROM appConfig");
+        ResultSet rs = sentencia.getResultSet();
+        while (rs.next()) {
+            ret = rs.getLong("minShippingHours");
+        }
+        
+        return ret;
+    }
+    public static int obtenerUltimaComanda(Connection con)  throws SQLException{
+        int ret = 1;
+        Statement sentencia;       
+        sentencia = con.createStatement();
+        sentencia.executeQuery("SELECT * FROM orders ORDER BY orderNumber DESC LIMIT 1");
+        ResultSet rs = sentencia.getResultSet();
+        Comanda comanda = null;
+        while (rs.next()) {
+              comanda = new Comanda(rs.getInt("orderNumber"), rs.getString("orderDate"), rs.getString("requiredDate"), rs.getString("shippedDate"),rs.getString("customers_customerEmail"));
+        }
+        if(comanda != null){
+            ret = comanda.getNumeroOrden();
+        }
+        return ret;
+    }
+    
     
      public static void borrarComanda(Connection conn , int idComanda) throws SQLException
     {
@@ -73,4 +117,21 @@ public class ComandasDAO {
         }
         return ret;
     }
+    
+    public static void insertarComanda(Connection con, Comanda comanda)  throws SQLException {
+        
+        String sqlQuery;
+        String nomBD = con.getCatalog();
+        
+        sqlQuery = "INSERT INTO "+nomBD+".orders (orderDate, requiredDate, shippedDate, customers_customerEmail) VALUES (?,?,?,?);";
+        
+        PreparedStatement preparedStatement = con.prepareStatement(sqlQuery);
+        preparedStatement.setString(1, comanda.getFechaOrden());
+        preparedStatement.setString(2, comanda.getFechaRequerida());
+        preparedStatement.setString(3, comanda.getFechaEnvio());
+        preparedStatement.setString(4, comanda.getEmailCliente());
+        
+        preparedStatement.executeUpdate();
+        
+    } 
 }

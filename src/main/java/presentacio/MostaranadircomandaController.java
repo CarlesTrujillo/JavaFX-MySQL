@@ -10,6 +10,8 @@ import aplicacio.ComandasLogic;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
@@ -79,8 +81,21 @@ public class MostaranadircomandaController implements Initializable {
     }
 
     @FXML
-    void onClick_añadir(ActionEvent event) {
-
+    void onClick_anadir(ActionEvent event) {
+        
+        Boolean listaVacia = cdl.listaVacia();
+        if (listaVacia) {
+              mostrarAlertaError("No se puede añadir una comanda sin lineas de comanda");
+        }
+        
+        try {
+             int ret = cl.crearComanda(listaVacia, fechaOrden.getText(), fechaEntrega.getText(), fechaEnvio.getText(), emailCliente.getText());
+             if (ret == 1) {
+                 mostrarAlertaError("No se puede crear la comanda porque la diferencia de horas entre la fecha de la creación de la comanda y la fecha prevista de entrega es menor a minShippingHours");
+            }
+        } catch (SQLException ex) {
+           mostrarAlertaError("Error al crear la comanda: " + ex.toString());
+        }
     }
 
     @FXML

@@ -64,7 +64,7 @@ public class PrincipalController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("comandas.fxml"));
         Stage stage = new Stage();
         stage.setScene(new Scene(loader.load()));
-        //stage.setResizable(false);
+        stage.setResizable(false);
         stage.show();
     }
 

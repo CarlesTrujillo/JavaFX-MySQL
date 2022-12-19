@@ -18,19 +18,19 @@ import model.ComandaDetails;
  */
 public class ComandaDetailsLogic {
     
-  ObservableList<ComandaDetails> llistaObservableComanda;
+  ObservableList<ComandaDetails> llistaObservableComandaDetails;
   private Connection conn;
     
      public ComandaDetailsLogic() throws SQLException {
 
         conn = DataSource.getConnection("m03uf6_22_23", "root", "1234");
 
-        llistaObservableComanda = FXCollections.<ComandaDetails>observableArrayList();
+        llistaObservableComandaDetails = FXCollections.<ComandaDetails>observableArrayList();
     }
     
      public void cargarComandaDetails(String idComanda) throws SQLException {
 
-        this.llistaObservableComanda.setAll(ComandasDetailsDAO.cargarComndasDetails(conn, idComanda));
+        this.llistaObservableComandaDetails.setAll(ComandasDetailsDAO.cargarComndasDetails(conn, idComanda));
 
     }
     
@@ -38,8 +38,13 @@ public class ComandaDetailsLogic {
         
         ComandasDetailsDAO.borrarTodasComandaDetails(conn, idComanda);
     }
+    
+     public Boolean listaVacia() {
+         
+        return llistaObservableComandaDetails.isEmpty();
+    }
      
     public ObservableList<ComandaDetails> getLlistaObservableComandaDetails() {
-        return llistaObservableComanda;
+        return llistaObservableComandaDetails;
     }
 }

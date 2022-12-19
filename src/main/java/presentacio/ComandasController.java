@@ -82,7 +82,16 @@ public class ComandasController implements Initializable {
 
     @FXML
     void onClick_anadir(ActionEvent event) {
-
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("mostaranadircomanda.fxml"));
+        Stage stage = new Stage();
+        try {
+            stage.setScene(new Scene(loader.load()));
+        } catch (IOException | IllegalStateException ex) {
+             mostrarAlertaError("Error al intentar inizializar la pantalla de mostrar detalles de la comanda: " + ex.toString());
+        }
+        stage.setResizable(false);
+        stage.show();
     }
 
     @FXML
@@ -91,8 +100,8 @@ public class ComandasController implements Initializable {
         Parent root = null;
         try {
             root = fxmlLoader.load();
-        } catch (IOException ex) {
-            Logger.getLogger(ComandasController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException | IllegalStateException ex) {           
+            mostrarAlertaError("Error al intentar inizializar la pantalla de mostrar detalles de la comanda: " + ex.toString());
         }
         MostaranadircomandaController  mostaranadircomandaController = fxmlLoader.getController();
         mostaranadircomandaController.setidComanda(Integer.toString(idComandaSeleccionada));
@@ -125,6 +134,8 @@ public class ComandasController implements Initializable {
             cl.caregarComandasFiltradasPorFecha(fechaIni, fechaFi);
         } catch (SQLException ex) {
              mostrarAlertaError("Error carregant dades: " + ex.toString());
+        } catch (Exception ex) {
+              mostrarAlertaError("Error en el formato de las fechas, el formato de las fechas debe ser (YYYY-MM-DD) : " + ex.toString());
         }
     }
     
