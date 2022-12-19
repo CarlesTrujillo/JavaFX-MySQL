@@ -11,17 +11,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+
 /**
  * FXML Controller class
  *
  * @author Albert
  */
 public class PrincipalController implements Initializable {
-
 
     @FXML
     private Button btn_Clientes;
@@ -31,14 +32,15 @@ public class PrincipalController implements Initializable {
     private Button btn_ordenes;
     @FXML
     private Button btn_salir;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       
-    }    
-    
+
+    }
+
     @FXML
     private void onClick_clientes(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("clientes.fxml"));
@@ -50,12 +52,16 @@ public class PrincipalController implements Initializable {
 
     @FXML
     private void onClick_productos(ActionEvent event) throws IOException {
-    App.setRoot("productos");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("productos.fxml"));
+        Stage stage = new Stage();
+        stage.setScene(new Scene(loader.load()));
+        stage.setResizable(false);
+        stage.show();
     }
 
     @FXML
     private void onClick_ordenes(ActionEvent event) throws IOException {
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("comandas.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("comandas.fxml"));
         Stage stage = new Stage();
         stage.setScene(new Scene(loader.load()));
         //stage.setResizable(false);
@@ -64,6 +70,13 @@ public class PrincipalController implements Initializable {
 
     @FXML
     private void onClick_salir(ActionEvent event) {
+        cerrarApp(event);
+    }
+    
+    private static void cerrarApp(ActionEvent event) {
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 
 }
