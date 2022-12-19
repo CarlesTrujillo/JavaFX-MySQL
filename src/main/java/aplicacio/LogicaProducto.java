@@ -27,4 +27,8 @@ public class LogicaProducto {
     public static void setProducto(Producto producto) throws SQLException {
         dades.ProductosDAO.insertarProducto(producto);
     }
+    
+    public static void deleteProducto(Producto producto) throws SQLException {
+        dades.ProductosDAO.deleteProducto(producto);
+    }
 }
