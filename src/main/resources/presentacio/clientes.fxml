@@ -10,24 +10,24 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="625.0" prefWidth="599.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.ClientesController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="685.0" prefWidth="732.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.ClientesController">
    <children>
-      <AnchorPane onKeyPressed="#onKey_Insert" onMouseClicked="#onClick_Pane" prefHeight="624.0" prefWidth="599.0">
+      <AnchorPane onKeyPressed="#onKey_Insert" prefHeight="685.0" prefWidth="732.0">
          <children>
-            <TableView fx:id="tablaClientes" layoutX="13.0" layoutY="304.0" onKeyPressed="#onKey_Delete" onMouseClicked="#onItem_Selected" prefHeight="259.0" prefWidth="579.0">
+            <TableView fx:id="tablaClientes" layoutX="13.0" layoutY="304.0" onKeyPressed="#onKey_Delete" onMouseClicked="#onItem_Selected" prefHeight="320.0" prefWidth="709.0">
               <columns>
-                <TableColumn fx:id="emailCol" prefWidth="99.0" text="Email" />
-                <TableColumn fx:id="dniCol" prefWidth="51.0" text="Dni" />
-                  <TableColumn fx:id="nameCol" prefWidth="111.0" text="Nombre" />
-                  <TableColumn fx:id="phoneCol" prefWidth="75.0" text="Telefono" />
-                  <TableColumn fx:id="creditCol" prefWidth="107.0" text="Credito" />
-                  <TableColumn fx:id="birthCol" prefWidth="131.0" text="Fecha Nacimiento" />
+                <TableColumn fx:id="emailCol" prefWidth="128.0" text="Email" />
+                <TableColumn fx:id="dniCol" prefWidth="113.0" text="Dni" />
+                  <TableColumn fx:id="nameCol" prefWidth="98.0" text="Nombre" />
+                  <TableColumn fx:id="phoneCol" prefWidth="121.0" text="Telefono" />
+                  <TableColumn fx:id="creditCol" prefWidth="82.0" text="Credito" />
+                  <TableColumn fx:id="birthCol" prefWidth="166.0" text="Fecha Nacimiento" />
               </columns>
             </TableView>
             <Button fx:id="btn_salir" layoutX="7.0" layoutY="7.0" mnemonicParsing="false" onAction="#onClick_salir" text="Salir" />
-            <Button fx:id="btn_add" layoutX="14.0" layoutY="571.0" mnemonicParsing="false" onAction="#onClick_añadir" prefHeight="39.0" prefWidth="170.0" text="Añadir" />
-            <Button fx:id="btn_modificar" layoutX="200.0" layoutY="571.0" mnemonicParsing="false" onAction="#onClick_modificar" prefHeight="39.0" prefWidth="183.0" text="Modificar" />
-            <Button fx:id="btn_borrar" layoutX="391.0" layoutY="571.0" mnemonicParsing="false" onAction="#onClick_borrar" prefHeight="39.0" prefWidth="196.0" text="Borrar" />
+            <Button fx:id="btn_add" layoutX="13.0" layoutY="632.0" mnemonicParsing="false" onAction="#onClick_añadir" prefHeight="39.0" prefWidth="204.0" text="Añadir" />
+            <Button fx:id="btn_modificar" layoutX="224.0" layoutY="632.0" mnemonicParsing="false" onAction="#onClick_modificar" prefHeight="39.0" prefWidth="247.0" text="Modificar" />
+            <Button fx:id="btn_borrar" layoutX="480.0" layoutY="632.0" mnemonicParsing="false" onAction="#onClick_borrar" prefHeight="39.0" prefWidth="238.0" text="Borrar" />
             <TextField fx:id="txtEmail" layoutX="356.0" layoutY="14.0" />
             <TextField fx:id="txtDni" layoutX="356.0" layoutY="64.0" />
             <TextField fx:id="txtNombre" layoutX="356.0" layoutY="109.0" />

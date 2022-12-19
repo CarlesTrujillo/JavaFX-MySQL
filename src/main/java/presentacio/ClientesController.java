@@ -110,7 +110,7 @@ public class ClientesController implements Initializable {
     }
     
     @FXML
-    void onKey_Insert(KeyEvent event) {
+    void onKey_Insert(KeyEvent event) throws SQLException {
         
         /***
          * Hotkey para insertar un usuario.
@@ -155,8 +155,6 @@ public class ClientesController implements Initializable {
             txtNombre.setText(cliente.getNombre());
             txtCredito.setText(cliente.getCreditoLimite() + "");
             txtFecha.setText(cliente.getFechaNacimiento());
-        }else{
-        limpiarCampos();
         }
     }
 
@@ -165,7 +163,7 @@ public class ClientesController implements Initializable {
      * @param event 
      */
     @FXML
-    private void onClick_añadir(ActionEvent event){
+    private void onClick_añadir(ActionEvent event) throws SQLException{
         insertarUsuario();
     }
     
@@ -177,7 +175,7 @@ public class ClientesController implements Initializable {
     @FXML
     private void onClick_modificar(ActionEvent event) throws SQLException {
         Cliente cliente = (Cliente) tablaClientes.getSelectionModel().getSelectedItem();
-        if(cliente != null){
+        if((cliente != null)&&(comprobarCampos())&&(comprobarEdad(cliente.getFechaNacimiento()))){
             int posicion = tablaClientes.getSelectionModel().getSelectedIndex();
             Cliente nuevoCliente = new Cliente();
             nuevoCliente.setNombre(txtNombre.getText());
@@ -189,6 +187,7 @@ public class ClientesController implements Initializable {
             aplicacio.LogicaCliente.updateCliente(nuevoCliente);
             llistaObservableClientes.set(posicion, nuevoCliente);
             tablaClientes.refresh();
+            limpiarCampos();
         }
     }
     
@@ -205,12 +204,6 @@ public class ClientesController implements Initializable {
         eliminarUsuario();
     }
     
-    @FXML
-    void onClick_Pane(ActionEvent event) {
-        limpiarCampos();
-    }
-    
-    
     /***
      * Funcion para hacer la comprobacion de la edad.
      * 
@@ -222,7 +215,7 @@ public class ClientesController implements Initializable {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fecha1 = LocalDate.parse(fecha, formatter);
         LocalDate fecha2 = LocalDate.now();
-        int edadMin = Integer.parseInt(LogicaCliente.consultarEdadMinima());
+        int edadMin = LogicaCliente.consultarEdadMinima();
         
         Period period = Period.between(fecha1,fecha2);
         
@@ -245,25 +238,30 @@ public class ClientesController implements Initializable {
         txtCredito.clear();
         txtFecha.clear();
     }
+    
     /***
      * Funcion para insertar un usuario.
      */
-    public void insertarUsuario(){
-        Cliente cliente = new Cliente();
-        cliente.setEmail(txtEmail.getText());
-        cliente.setDni(txtDni.getText());
-        cliente.setNombre(txtNombre.getText());
-        cliente.setTelefono(txtTelefono.getText());
-        double credito = Double.parseDouble(txtCredito.getText());
-        cliente.setCreditoLimite(credito);
-        cliente.setFechaNacimiento(txtFecha.getText());       
-        try {
-            dades.DataSource.getConnection("m03uf6_22_23","root","123456");
-            aplicacio.LogicaCliente.setCliente(cliente);
-            llistaObservableClientes.add(cliente);
-            tablaClientes.refresh();
-            limpiarCampos();
-        } catch (SQLException ex) {
+    public void insertarUsuario() throws SQLException{
+        if(comprobarCampos()){
+            Cliente cliente = new Cliente();
+            cliente.setEmail(txtEmail.getText());
+            cliente.setDni(txtDni.getText());
+            cliente.setNombre(txtNombre.getText());
+            cliente.setTelefono(txtTelefono.getText());
+            double credito = Double.parseDouble(txtCredito.getText());
+            cliente.setCreditoLimite(credito);
+            cliente.setFechaNacimiento(txtFecha.getText());  
+            if(comprobarEdad(cliente.getFechaNacimiento())){
+                try {
+                    dades.DataSource.getConnection("m03uf6_22_23","root","123456");
+                    aplicacio.LogicaCliente.setCliente(cliente);
+                    llistaObservableClientes.add(cliente);
+                    tablaClientes.refresh();
+                    limpiarCampos();
+                } catch (SQLException ex) {
+                }
+            }
         }
     }
     
@@ -278,4 +276,21 @@ public class ClientesController implements Initializable {
         limpiarCampos();
     }
     
+    /***
+     * Funcion que comprueba si los campos de texto estan rellenos.
+     * 
+     * @return 
+     */
+    public boolean comprobarCampos(){
+        if((txtNombre.getText()!= null)&&
+            (txtDni.getText() != null)&&
+            (txtEmail.getText()!= null)&&
+            (txtTelefono.getText()!= null)&&
+            (txtFecha.getText()!= null)&&
+            (txtCredito.getText()!= null)){
+                return true;
+            }else{
+                return false;
+            }
+    }
 }

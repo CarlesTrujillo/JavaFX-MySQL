@@ -4,6 +4,7 @@ import model.Cliente;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -21,13 +22,9 @@ public class clienteDAO {
         Connection con = DataSource.getConnection("m03uf6_22_23", "root", "123456");
         ArrayList<Cliente> clientes = new ArrayList<>();
         Statement sentencia;
-        
         sentencia = con.createStatement();
         sentencia.executeQuery("select * from customers");
         ResultSet rs = sentencia.getResultSet();
-        //Statement stmt = con.createStatement();
-        //String query = "select * from customers";
-        //PreparedStatement rs = stmt.executeUpdate(query);
         while (rs.next()) {
             Cliente cliente = new Cliente();
             cliente.setEmail(rs.getString("customerEmail"));
@@ -58,17 +55,20 @@ public class clienteDAO {
         
     }
     
-    public static String consultarEdad() throws SQLException{
-        
+    public static int consultarEdad() throws SQLException{
         Connection conn = DataSource.getConnection("m03uf6_22_23", "root", "123456");
         Statement sentencia;
-        
         sentencia = conn.createStatement();        
-        String query = "select * from appConfig";
-        ResultSet rs = sentencia.executeQuery(query);
-            
-        String edad = rs.getString("minCustomerAge");            
-        return edad;
+        String query = "select * from appConfig;";
+        sentencia.executeQuery(query);
+        Byte edad;
+        int ret = 0;
+        ResultSet rs = sentencia.getResultSet();
+        while(rs.next()){
+            edad=rs.getByte("minCustomerAge");
+            ret = edad.intValue();
+        }
+        return ret;
     
     }
     

@@ -31,8 +31,8 @@ public class LogicaCliente {
         dades.clienteDAO.deleteCliente(cliente);
     }
     
-    public static String consultarEdadMinima() throws SQLException{
-        String edad = dades.clienteDAO.consultarEdad();
+    public static int consultarEdadMinima() throws SQLException{
+        int edad = dades.clienteDAO.consultarEdad();
         return edad;
     }
     
