@@ -32,4 +32,12 @@ public class ComandasDetailsDAO {
         
         return ret;
     }
+    
+     public static void borrarTodasComandaDetails(Connection conn , int idComanda) throws SQLException
+    {
+         Statement sentencia;
+         String nomBD = conn.getCatalog();
+         sentencia = conn.createStatement();
+         sentencia.executeUpdate("DELETE FROM "+nomBD+".orderdetails WHERE orderNumber = " + idComanda);
+    }
 }

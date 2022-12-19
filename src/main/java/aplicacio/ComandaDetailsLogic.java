@@ -33,6 +33,11 @@ public class ComandaDetailsLogic {
         this.llistaObservableComanda.setAll(ComandasDetailsDAO.carregarComndasDetails(conn, idComanda));
 
     }
+    
+    public void borrarTodasComandaDetails(int idComanda) throws SQLException {
+        
+        ComandasDetailsDAO.borrarTodasComandaDetails(conn, idComanda);
+    }
      
     public ObservableList<ComandaDetails> getLlistaObservableComandaDetails() {
         return llistaObservableComanda;
