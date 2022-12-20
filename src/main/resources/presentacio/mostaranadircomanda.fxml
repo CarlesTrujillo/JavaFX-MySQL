@@ -16,12 +16,11 @@
          <children>
             <TableView fx:id="tablaOrderDetails" layoutX="13.0" layoutY="348.0" prefHeight="250.0" prefWidth="579.0">
               <columns>
-                <TableColumn fx:id="idProducto" prefWidth="171.0" text="Nombre del producto" />
+                <TableColumn fx:id="idProducto" prefWidth="171.0" text="ID del producto" />
                 <TableColumn fx:id="cantidadPedida" prefWidth="211.0" text="Cantidad pedida" />
                   <TableColumn fx:id="precioProductoUnico" prefWidth="190.0" text="Precio del producto único" />
               </columns>
             </TableView>
-            <Button fx:id="btn_salir" layoutX="7.0" layoutY="7.0" mnemonicParsing="false" onAction="#onClick_salir" text="Salir" />
             <Button fx:id="btn_add" layoutX="27.0" layoutY="653.0" mnemonicParsing="false" onAction="#onClick_anadir" prefHeight="39.0" prefWidth="170.0" text="Añadir" />
             <Button fx:id="btn_borrar" layoutX="200.0" layoutY="653.0" mnemonicParsing="false" onAction="#onClick_borrar" prefHeight="39.0" prefWidth="183.0" text="Borrar" />
             <Button fx:id="btn_guardar" layoutX="389.0" layoutY="653.0" mnemonicParsing="false" onAction="#onClick_guardar" prefHeight="39.0" prefWidth="196.0" text="Guardar cambios" />

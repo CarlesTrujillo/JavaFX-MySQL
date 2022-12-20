@@ -68,4 +68,49 @@ public class ComandasDetailsDAO {
         
     
     }
+    
+     public static double maxOrderAmount(Connection con) throws SQLException{
+        double ret = 0;
+        Statement sentencia;
+        
+        sentencia = con.createStatement();
+        sentencia.executeQuery("SELECT * FROM appConfig");
+        ResultSet rs = sentencia.getResultSet();
+        while (rs.next()) {
+            ret = rs.getLong("maxOrderAmount");
+        }
+        
+        return ret;
+    }
+     
+    public static double defaultProductBenefit(Connection con) throws SQLException{
+    
+         double ret = 0;
+        Statement sentencia;
+        
+        sentencia = con.createStatement();
+        sentencia.executeQuery("SELECT * FROM appConfig");
+        ResultSet rs = sentencia.getResultSet();
+        while (rs.next()) {
+            ret = rs.getDouble("defaultProductBenefit");
+        }
+        
+        return ret;
+    }
+
+    public static int defaultQuantityOrdered(Connection con) throws SQLException {
+        int ret = 0;
+        Statement sentencia;
+        
+        sentencia = con.createStatement();
+        sentencia.executeQuery("SELECT * FROM appConfig");
+        ResultSet rs = sentencia.getResultSet();
+        while (rs.next()) {
+            ret = rs.getInt("defaultQuantityOrdered");
+        }
+        
+        return ret;
+    }
+
+    
 }

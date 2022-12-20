@@ -23,7 +23,6 @@
                   <TableColumn fx:id="emailCliente" prefWidth="143.0" text="Email del cliente" />
               </columns>
             </TableView>
-            <Button fx:id="btn_salir" layoutX="7.0" layoutY="7.0" mnemonicParsing="false" onAction="#onClick_salir" text="Salir" />
             <Button fx:id="btn_add" layoutX="14.0" layoutY="394.0" mnemonicParsing="false" onAction="#onClick_anadir" prefHeight="39.0" prefWidth="193.0" text="Añadir" />
             <Button fx:id="btn_modificar" layoutX="263.0" layoutY="394.0" mnemonicParsing="false" onAction="#onClick_modificar" prefHeight="39.0" prefWidth="193.0" text="Modificar" />
             <Button fx:id="btn_borrar" layoutX="513.0" layoutY="394.0" mnemonicParsing="false" onAction="#onClick_borrar" prefHeight="39.0" prefWidth="193.0" text="Borrar" />

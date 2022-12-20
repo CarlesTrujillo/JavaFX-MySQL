@@ -34,9 +34,9 @@ public class ComandasLogic {
         llistaObservableComanda = FXCollections.<Comanda>observableArrayList();
     }
     
-    public int crearComanda(Boolean permitir, String fechaOrden, String fechaEntrega, String fechaEnvio, String emailCliente) throws SQLException{
+    public int crearComanda(Boolean permitir, Boolean maxOrderAmount, String fechaOrden, String fechaEntrega, String fechaEnvio, String emailCliente) throws SQLException{
        int ret = 0;
-        if (!permitir) {
+        if (!permitir && maxOrderAmount) {
             long diferenciaHoras = restarFechas(fechaOrden, fechaEntrega);
             long minShippingHours = minShippingHours();
             if(diferenciaHoras > minShippingHours){
@@ -57,13 +57,12 @@ public class ComandasLogic {
          ComandasDAO.modificarUnaComanda(conn, comanda);
     }
     
-    public 
-        long minShippingHours(){
+    public long minShippingHours(){
          long ret = 0;
         try {
             ret = ComandasDAO.minShippingHours(conn);
         } catch (SQLException ex) {
-            Logger.getLogger(ComandasLogic.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
         
         return ret;

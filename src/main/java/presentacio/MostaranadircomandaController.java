@@ -99,17 +99,20 @@ public class MostaranadircomandaController implements Initializable {
     void onClick_anadir(ActionEvent event) {
         
         Boolean listaVacia = cdl.listaVacia();
+        Boolean maxOrderAmount = cdl.maxOrderAmount(Double.parseDouble(precioTotal.getText().split(" ")[0]));
         if (listaVacia) {
               mostrarAlertaError("No se puede añadir una comanda sin lineas de comanda");
+        } else if(maxOrderAmount){
+             mostrarAlertaError("No se puede añadir una comanda que tenga un importe mayor a maxOrderAmount");
         }
         
         try {
-             int ret = cl.crearComanda(listaVacia, fechaOrden.getText(), fechaEntrega.getText(), fechaEnvio.getText(), emailCliente.getText());
-             cdl.insertarVariasComandasDetails(listaVacia);
-             
-             if (ret == 1) {
-                 mostrarAlertaError("No se puede crear la comanda porque la diferencia de horas entre la fecha de la creación de la comanda y la fecha prevista de entrega es menor a minShippingHours");
-            }
+             int ret = cl.crearComanda(listaVacia, maxOrderAmount, fechaOrden.getText(), fechaEntrega.getText(), fechaEnvio.getText(), emailCliente.getText());
+              if (ret == 1) {
+                mostrarAlertaError("No se puede crear la comanda porque la diferencia de horas entre la fecha de la creación de la comanda y la fecha prevista de entrega es menor a minShippingHours");            
+            }else{
+               cdl.insertarVariasComandasDetails(listaVacia, maxOrderAmount);
+              }
         } catch (SQLException ex) {
            mostrarAlertaError("Error al crear la comanda: " + ex.toString());
         }
@@ -168,21 +171,20 @@ public class MostaranadircomandaController implements Initializable {
             
         
         }else{
-            
-            int idUltimaComanda = 0;
-            try {
-                idUltimaComanda = cl.obtenerUltimaComanda() + 1;
-                System.out.println(idUltimaComanda);
-            } catch (SQLException ex) {
-                mostrarAlertaError("Error al intentar recuperar la ultima comanda: " + ex.toString());
-            }
-            cdl.insertarUnComandaDetailsenListaObservable(idUltimaComanda, producto, Integer.parseInt(cantidadProducto.getText()));
-            Double nuevoPrecio = cdl.sumarImporteDeComandaDetailsCreada(precioTot, idUltimaComanda,  producto.getCode());
+            cdl.insertarUnComandaDetailsenListaObservable(0, producto, Integer.parseInt(cantidadProducto.getText()));
+            Double nuevoPrecio = cdl.sumarImporteDeComandaDetailsCreada(precioTot, 0,  producto.getCode());
             precioTotal.setText(Double.toString(nuevoPrecio) + " €");
         }
         
         nuevoProducto.setText("");
-        cantidadProducto.setText("");
+         int defaultCantidad = 0;
+        try {
+            defaultCantidad = cdl.defaultQuantityOrdered();
+        } catch (SQLException ex) {
+            mostrarAlertaError("Error al intentar insertar el nuevo ComandaDetails: " + ex.toString());
+        }
+          cantidadProducto.setText(Integer.toString(defaultCantidad));
+       
     }
     
     /**
@@ -190,9 +192,12 @@ public class MostaranadircomandaController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
        try {
             cl = new ComandasLogic();
             cdl = new ComandaDetailsLogic();
+            int defaultCantidad = cdl.defaultQuantityOrdered();
+            cantidadProducto.setText(Integer.toString(defaultCantidad));
             tablaOrderDetails.setItems(cdl.getLlistaObservableComandaDetails());
             double importe = cdl.importe();
             precioTotal.setText(Double.toString(importe) + " €");

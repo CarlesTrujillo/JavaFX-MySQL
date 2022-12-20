@@ -4,10 +4,13 @@
  */
 package aplicacio;
 
+import dades.ComandasDAO;
 import dades.ComandasDetailsDAO;
 import dades.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.ComandaDetails;
@@ -44,25 +47,36 @@ public class ComandaDetailsLogic {
         
         ComandasDetailsDAO.borrarUnaComandaDetails(conn, idComanda, idProducto);
     }
-     
-     public void insertarVariasComandasDetails(Boolean permitir) throws SQLException{
-        if(!permitir){ 
+    
+    public double defaultProductBenefit() {
+    
+        Double ret = 0.0;
+      try {
+          ret = (ComandasDetailsDAO.defaultProductBenefit(conn) / 100) + 1.00;
+      } catch (SQLException ex) {
+          System.out.println(ex);
+      }
+        return ret;
+    }
+     public void insertarVariasComandasDetails(Boolean permitir, Boolean maxOrderAmount) throws SQLException{
+        if(!permitir && !maxOrderAmount){ 
             for (ComandaDetails comandaDetails : listaObservableComandaDetails) {
-                
+                 int idComanda = ComandasDAO.obtenerUltimaComanda(conn);
+                 comandaDetails.setNumeroComanda(idComanda);
                 ComandasDetailsDAO.insertarUnComandaDetails(conn, comandaDetails);
             }
         }
      }
      
      public void insertarUnComandaDetailsenListaObservable(int idComanda, Producto producto, int cantidadPedida){
-         
-         ComandaDetails comandaDetails = new ComandaDetails(idComanda, producto.getCode(), cantidadPedida, producto.getPrecio(), 0);
+         double beneficio = defaultProductBenefit();
+         ComandaDetails comandaDetails = new ComandaDetails(idComanda, producto.getCode(), cantidadPedida, producto.getPrecio() * beneficio, 0);
          this.listaObservableComandaDetails.add(comandaDetails);
      }
      
-    public void insertarUnComandaDetails(int idComanda, Producto producto, int cantidadPedida) throws SQLException{
-        
-        ComandaDetails comandaDetails = new ComandaDetails(idComanda, producto.getCode(), cantidadPedida, producto.getPrecio(), 0);
+    public void insertarUnComandaDetails(int idComanda, Producto producto, int cantidadPedida) throws SQLException{ 
+        double beneficio = defaultProductBenefit();
+        ComandaDetails comandaDetails = new ComandaDetails(idComanda, producto.getCode(), cantidadPedida, producto.getPrecio() * beneficio, 0);
         ComandasDetailsDAO.insertarUnComandaDetails(conn, comandaDetails);
         this.listaObservableComandaDetails.add(comandaDetails);
     }
@@ -107,6 +121,25 @@ public class ComandaDetailsLogic {
      public Boolean listaVacia() {
          
         return listaObservableComandaDetails.isEmpty();
+    }
+     
+    public Boolean maxOrderAmount(double importe)  {
+      Boolean ret = false;
+      try {
+          if(importe > ComandasDetailsDAO.maxOrderAmount(conn)){
+              ret = true;
+          }
+          
+      } catch (SQLException ex) {
+         System.out.println(ex);
+      }
+      return ret; 
+    }
+    
+    public int defaultQuantityOrdered() throws SQLException{
+        
+        int ret = ComandasDetailsDAO.defaultQuantityOrdered(conn);
+        return ret;
     }
      
     public double importe(){
