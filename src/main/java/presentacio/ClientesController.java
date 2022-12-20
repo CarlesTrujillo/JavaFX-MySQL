@@ -86,7 +86,7 @@ public class ClientesController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {    
             ArrayList<Cliente> clientes = aplicacio.LogicaCliente.getClientes();
-                        
+            limpiarCampos();            
             for (Cliente s : clientes) {
                 llistaObservableClientes.add(new Cliente(s.getEmail(), s.getDni(),s.getNombre(),s.getTelefono(),s.getCreditoLimite(),s.getFechaNacimiento()));
             }
@@ -97,8 +97,9 @@ public class ClientesController implements Initializable {
             creditCol.setCellValueFactory(new PropertyValueFactory<>("creditoLimite"));
             birthCol.setCellValueFactory(new PropertyValueFactory<>("fechaNacimiento"));
             tablaClientes.setItems(llistaObservableClientes);
-            dades.DataSource.getConnection("m03uf6_22_23","root","123456");
             
+            dades.DataSource.getConnection("m03uf6_22_23","root","123456");
+             
         } catch (SQLException ex) {
             
 //            Logger.getLogger(ClientesController.class.getName()).log(Level.SEVERE, null, ex);
@@ -229,12 +230,12 @@ public class ClientesController implements Initializable {
      * Funcion para limpiar los campos de texto despues de un Insert, Update, Delete.
      * 
      */
-    public void limpiarCampos(){
+    public void limpiarCampos() throws SQLException{
         txtEmail.clear();
         txtDni.clear();
         txtTelefono.clear();
         txtNombre.clear();
-        txtCredito.clear();
+        txtCredito.setText(aplicacio.LogicaCliente.getCreditLimit() + "");
         txtFecha.clear();
     }
     

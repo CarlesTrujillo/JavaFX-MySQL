@@ -40,5 +40,11 @@ public class LogicaCliente {
     dades.clienteDAO.updateCliente(cliente);
     }
     
+    public static double getCreditLimit() throws SQLException{
+       double creditLimit = dades.clienteDAO.getCreditLimit();
+       return creditLimit;
+    }
+    
+    
     
 }
