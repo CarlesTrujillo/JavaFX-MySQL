@@ -4,7 +4,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="328.0" prefWidth="279.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.PrincipalController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="328.0" prefWidth="279.0" stylesheets="styles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="presentacio.PrincipalController">
    <children>
       <Button fx:id="btn_Clientes" layoutX="101.0" layoutY="46.0" mnemonicParsing="false" onAction="#onClick_clientes" prefHeight="39.0" prefWidth="108.0" text="Clientes" />
       <Button fx:id="btn_productos" layoutX="101.0" layoutY="107.0" mnemonicParsing="false" onAction="#onClick_productos" prefHeight="39.0" prefWidth="108.0" text="Productos" />
