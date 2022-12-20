@@ -5,19 +5,19 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Region;
 import model.Producto;
 
 /**
@@ -28,7 +28,13 @@ import model.Producto;
  */
 public class ProductosController implements Initializable {
 
+    // Varios
     private int idProductoSeleccionado;
+    
+    ObservableList<Producto> llistaObservableProductos = FXCollections.observableArrayList();
+    
+    @FXML
+    private TableView<Producto> tablaProductos;
 
     // Botones
     @FXML
@@ -47,16 +53,18 @@ public class ProductosController implements Initializable {
     private TextField txtStock;
     @FXML
     private TextField txtPrecio;
-
-    @FXML
-    private TableView<Producto> tablaProductos;
-
+    
     // Columnas
     @FXML
     private TableColumn idCol, nombreCol, descCol, stockCol, precioCol;
 
-    ObservableList<Producto> llistaObservableProductos = FXCollections.observableArrayList();
-
+    /**
+     * Funciones de los clics de los botones que se encuentran en la 
+     * pantalla Productos
+     * 
+     * @param event
+     * @throws SQLException 
+     */
     @FXML
     private void onClickEdit(ActionEvent event) throws SQLException {
         modificarProducto();
@@ -94,8 +102,8 @@ public class ProductosController implements Initializable {
             tablaProductos.setItems(llistaObservableProductos);
             dades.DataSource.getConnection("m03uf6_22_23", "root", "123456");
             /**
-             * Ejecutamos el metodo de limpiar campos desde el inicio ya que
-             * así tendremos la cantidad predeterminada de stock que tenemos
+             * Ejecutamos el metodo de limpiar campos desde el inicio ya que así
+             * tendremos la cantidad predeterminada de stock que tenemos
              * almacenada en nuestra BBDD cargada automaticamente al abrir
              * nuestra pantalla
              */
@@ -107,9 +115,10 @@ public class ProductosController implements Initializable {
     }
 
     /**
-     * Esta función recoge el valor seleccionado por el usuario en la lista
-     * para luego poder trabajar con ello
-     * @param event 
+     * Esta función recoge el valor seleccionado por el usuario en la lista para
+     * luego poder trabajar con ello
+     *
+     * @param event
      */
     @FXML
     void onItem_Selected(MouseEvent event) {
@@ -123,9 +132,10 @@ public class ProductosController implements Initializable {
         }
     }
 
-    // Función para insertar un producto
+    /**
+     * Función para insertar un producto a la base de datos
+     */ 
     public void insertarProducto() {
-        if (noEstaVacio()) {
             Producto producto = new Producto();
             producto.setNombre(txtNombre.getText());
             producto.setDescripcion(txtDesc.getText());
@@ -142,12 +152,17 @@ public class ProductosController implements Initializable {
                 limpiarCampos();
 
             } catch (SQLException ex) {
-
+                mostrarAlertaError("Error carregant dades: " + ex.toString());
+            } catch (RuntimeException ex) {
+                alertaCampoVacio("Los campos no deben estar vacíos" + ex.toString());
             }
-        }
     }
 
-    // Función para modificar un producto de la BBDD
+    /**
+     * Función para modificar un producto de la BBDD
+     * 
+     * @throws SQLException 
+     */
     public void modificarProducto() throws SQLException {
         Producto producto = (Producto) tablaProductos.getSelectionModel().getSelectedItem();
         if ((producto != null) && (noEstaVacio())) {
@@ -165,7 +180,11 @@ public class ProductosController implements Initializable {
         }
     }
 
-    // Función para eliminar un producto de la BBDD
+    /**
+     * Función para eliminar un producto de la BBDD
+     * 
+     * @throws SQLException 
+     */
     public void eliminarProducto() throws SQLException {
         Producto producto = (Producto) tablaProductos.getSelectionModel().getSelectedItem();
         LogicaProducto.deleteProducto(producto);
@@ -174,7 +193,11 @@ public class ProductosController implements Initializable {
         limpiarCampos();
     }
 
-    // Función para dejar en blanco los TextField
+    /**
+     * Función para dejar en blanco los TextField
+     * 
+     * @throws SQLException 
+     */
     public void limpiarCampos() throws SQLException {
         txtNombre.clear();
         txtDesc.clear();
@@ -182,10 +205,40 @@ public class ProductosController implements Initializable {
         txtStock.setText(LogicaProducto.getDefaultStock() + "");
     }
 
-    // Función para comprobar que los campos no estén vacíos
+    /**
+     * Función para comprobar que los campos no estén vacíos
+     * 
+     * @return 
+     */
     public boolean noEstaVacio() {
         return (txtNombre.getText() != null) && (txtDesc.getText() != null)
                 && (txtStock.getText() != null) && (txtPrecio.getText() != null);
     }
 
+    /**
+     * Alerta por fallo con la conexión a la base de datos
+     * 
+     * @param txt 
+     */
+    private void mostrarAlertaError(String txt) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.setTitle("ERROR");
+        alert.setContentText(txt);
+
+        alert.showAndWait();
+    }
+    
+    /**
+     * Alerta por error al no escribir nada en los campos
+     * @param txt 
+     */
+    private void alertaCampoVacio(String txt) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.setTitle("ERROR");
+        alert.setContentText(txt);
+        
+        alert.showAndWait();
+    }
 }
