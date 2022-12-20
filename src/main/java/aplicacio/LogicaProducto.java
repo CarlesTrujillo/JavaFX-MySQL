@@ -27,16 +27,18 @@ public class LogicaProducto {
     public static void setProducto(Producto producto) throws SQLException {
         dades.ProductosDAO.insertarProducto(producto);
     }
-    
+
     public static void updateProducto(Producto producto) throws SQLException {
         dades.ProductosDAO.updateProducto(producto);
     }
-    
+
     public static void deleteProducto(Producto producto) throws SQLException {
         dades.ProductosDAO.deleteProducto(producto);
     }
-    
-    public static void getDefaultStock(String defaultStock) throws SQLException {
-        //dades.ProductosDAO.getStockDefault(defaultStock);
+
+    public static int getDefaultStock() throws SQLException {
+        int cantidadStockDefault = dades.ProductosDAO.getStockDefault();
+
+        return cantidadStockDefault;
     }
 }

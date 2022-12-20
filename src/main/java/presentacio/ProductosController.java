@@ -5,6 +5,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -79,6 +81,7 @@ public class ProductosController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
+
             ArrayList<Producto> productos = aplicacio.LogicaProducto.getProductos();
 
             llistaObservableProductos.setAll(productos);
@@ -90,12 +93,24 @@ public class ProductosController implements Initializable {
             precioCol.setCellValueFactory(new PropertyValueFactory<>("precio"));
             tablaProductos.setItems(llistaObservableProductos);
             dades.DataSource.getConnection("m03uf6_22_23", "root", "123456");
+            /**
+             * Ejecutamos el metodo de limpiar campos desde el inicio ya que
+             * así tendremos la cantidad predeterminada de stock que tenemos
+             * almacenada en nuestra BBDD cargada automaticamente al abrir
+             * nuestra pantalla
+             */
+            limpiarCampos();
+
         } catch (SQLException ex) {
 
         }
     }
 
-    // Función de selección de elemento en la tabla
+    /**
+     * Esta función recoge el valor seleccionado por el usuario en la lista
+     * para luego poder trabajar con ello
+     * @param event 
+     */
     @FXML
     void onItem_Selected(MouseEvent event) {
         Producto producto = (Producto) tablaProductos.getSelectionModel().getSelectedItem();
@@ -160,11 +175,11 @@ public class ProductosController implements Initializable {
     }
 
     // Función para dejar en blanco los TextField
-    public void limpiarCampos() {
+    public void limpiarCampos() throws SQLException {
         txtNombre.clear();
         txtDesc.clear();
         txtPrecio.clear();
-        //txtStock = LogicaProducto.getDefaultStock();
+        txtStock.setText(LogicaProducto.getDefaultStock() + "");
     }
 
     // Función para comprobar que los campos no estén vacíos

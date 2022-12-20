@@ -79,36 +79,36 @@ public class ProductosDAO {
         return productos;
     }
 
-    /*public static void getStockDefault() throws SQLException {
+    public static int getStockDefault() throws SQLException {
         Connection con = DataSource.getConnection("m03uf6_22_23", "root", "123456");
         Statement sentencia;
         sentencia = con.createStatement();
-        sentencia.executeQuery("SELECT defaultQuantityInStock FROM appconfig;");
-    }*/
-
-    /*public static void getID() throws SQLException {
-        Connection con = DataSource.getConnection("m03uf6_22_23", "root", "123456");
+        sentencia.executeQuery("SELECT * FROM appConfig;");
+        Byte cantidadStockDefault;
+        int ret = 0;
+        ResultSet rs = sentencia.getResultSet();
         
+        while (rs.next()) {
+            cantidadStockDefault=rs.getByte("defaultQuantityInStock");
+            ret = cantidadStockDefault.intValue();
+        }
+        return ret;
+    }
+
+    /*public static Producto getNombre() throws SQLException {
+        Connection con = DataSource.getConnection("m03uf6_22_23", "root", "123456");
+        Producto producto = new Producto();
         Statement sentencia;
+        
         sentencia = con.createStatement();
-        String sqlQuery = "SELECT * FROM products WHERE productCode = ?;";
+        String sqlQuery = "SELECT * FROM products WHERE productName = " + producto.getNombre() + ";";
         sentencia.executeQuery(sqlQuery);
         ResultSet rs = sentencia.getResultSet();
         
-        PreparedStatement preparedStatement = con.prepareStatement(sqlQuery);
-        int codigo = Integer.parseInt(rs.getString("productCode"));
-        preparedStatement.setInt(1, codigo);
-    }*/
-
-    /*public static void getNombre() throws SQLException {
-        Connection con = DataSource.getConnection("m03uf6_22_23", "root", "123456");
-        Statement sentencia;
-        sentencia = con.createStatement();
-        String sqlQuery = "SELECT * FROM products WHERE productName = ?;";
-        sentencia.executeQuery(sqlQuery);
-        ResultSet rs = sentencia.getResultSet();
+        while(rs.next()) {
+            producto.setNombre(rs.getString("productName"));
+        }
         
-        PreparedStatement preparedStatement = con.prepareStatement(sqlQuery);
-        preparedStatement.setString(1, rs.getString("productName"));
+        return producto;
     }*/
 }
