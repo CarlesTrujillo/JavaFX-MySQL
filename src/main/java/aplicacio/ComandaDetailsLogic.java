@@ -69,16 +69,23 @@ public class ComandaDetailsLogic {
      }
      
      public void insertarUnComandaDetailsenListaObservable(int idComanda, Producto producto, int cantidadPedida){
+          if (producto.getCode() != 0) {
          double beneficio = defaultProductBenefit();
          ComandaDetails comandaDetails = new ComandaDetails(idComanda, producto.getCode(), cantidadPedida, producto.getPrecio() * beneficio, 0);
          this.listaObservableComandaDetails.add(comandaDetails);
+         }
      }
      
     public void insertarUnComandaDetails(int idComanda, Producto producto, int cantidadPedida) throws SQLException{ 
-        double beneficio = defaultProductBenefit();
-        ComandaDetails comandaDetails = new ComandaDetails(idComanda, producto.getCode(), cantidadPedida, producto.getPrecio() * beneficio, 0);
-        ComandasDetailsDAO.insertarUnComandaDetails(conn, comandaDetails);
-        this.listaObservableComandaDetails.add(comandaDetails);
+            if (producto.getCode() != 0) {
+                 double beneficio = defaultProductBenefit();
+                ComandaDetails comandaDetails = new ComandaDetails(idComanda, producto.getCode(), cantidadPedida, producto.getPrecio() * beneficio, 0);
+                ComandasDetailsDAO.insertarUnComandaDetails(conn, comandaDetails);
+                this.listaObservableComandaDetails.add(comandaDetails);
+            }
+           
+        
+        
     }
     
     public void borrarUnaComandaDetailsdeTableview(int idComanda, int idProducto){
@@ -107,14 +114,15 @@ public class ComandaDetailsLogic {
     public Double sumarImporteDeComandaDetailsCreada(Double importeTotal, int idComanda, int idProducto){
         
         double ret = 0;
-          for (ComandaDetails comandaDetails : listaObservableComandaDetails) {
+        if (idProducto != 0) {
+            for (ComandaDetails comandaDetails : listaObservableComandaDetails) {
                if (comandaDetails.getNumeroComanda() == idComanda && comandaDetails.getCodigoProducto() == idProducto) {
                     double precio = (double) comandaDetails.getPrecioProducto() * comandaDetails.getCantidadPedida();
                    importeTotal += precio;
                    ret = importeTotal;
                }
-          }
-          
+          } 
+        } 
           return ret;
     }
     

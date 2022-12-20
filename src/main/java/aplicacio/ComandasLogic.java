@@ -36,7 +36,7 @@ public class ComandasLogic {
     
     public int crearComanda(Boolean permitir, Boolean maxOrderAmount, String fechaOrden, String fechaEntrega, String fechaEnvio, String emailCliente) throws SQLException{
        int ret = 0;
-        if (!permitir && maxOrderAmount) {
+        if (!permitir && !maxOrderAmount) {
             long diferenciaHoras = restarFechas(fechaOrden, fechaEntrega);
             long minShippingHours = minShippingHours();
             if(diferenciaHoras > minShippingHours){

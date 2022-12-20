@@ -161,9 +161,16 @@ public class MostaranadircomandaController implements Initializable {
         
         if (esModificar) {
             try {
-                cdl.insertarUnComandaDetails(Integer.parseInt(idComanda), producto, Integer.parseInt(cantidadProducto.getText()));
+                  if (producto.getCode() == 0) {
+                     mostrarAlertaError("Error al intentar encontrar el producto indicado");
+                   }
+                  cdl.insertarUnComandaDetails(Integer.parseInt(idComanda), producto, Integer.parseInt(cantidadProducto.getText()));
+                
                 Double nuevoPrecio = cdl.sumarImporteDeComandaDetailsCreada(precioTot,Integer.parseInt(idComanda),  producto.getCode());
-                precioTotal.setText(Double.toString(nuevoPrecio) + " €");
+                if (nuevoPrecio != 0) {
+                precioTotal.setText(Double.toString(nuevoPrecio) + " €"); 
+                }
+              
                 
             } catch (SQLException ex) {
                  mostrarAlertaError("Error al intentar insertar el nuevo ComandaDetails: " + ex.toString());
@@ -171,9 +178,16 @@ public class MostaranadircomandaController implements Initializable {
             
         
         }else{
-            cdl.insertarUnComandaDetailsenListaObservable(0, producto, Integer.parseInt(cantidadProducto.getText()));
+             if (producto.getCode() == 0) {
+               mostrarAlertaError("Error al intentar encontrar el producto indicado");
+              }
+           cdl.insertarUnComandaDetailsenListaObservable(0, producto, Integer.parseInt(cantidadProducto.getText()));
+            
             Double nuevoPrecio = cdl.sumarImporteDeComandaDetailsCreada(precioTot, 0,  producto.getCode());
-            precioTotal.setText(Double.toString(nuevoPrecio) + " €");
+            if (nuevoPrecio != 0) {
+                precioTotal.setText(Double.toString(nuevoPrecio) + " €"); 
+            }
+           
         }
         
         nuevoProducto.setText("");
