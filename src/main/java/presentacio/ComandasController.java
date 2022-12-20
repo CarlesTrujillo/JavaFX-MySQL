@@ -83,13 +83,20 @@ public class ComandasController implements Initializable {
     @FXML
     void onClick_anadir(ActionEvent event) {
         
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("mostaranadircomanda.fxml"));
-        Stage stage = new Stage();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("mostaranadircomanda.fxml"));
+        Parent root = null;
+        
         try {
-            stage.setScene(new Scene(loader.load()));
+            root = fxmlLoader.load();
+            
         } catch (IOException | IllegalStateException ex) {
              mostrarAlertaError("Error al intentar inizializar la pantalla de mostrar detalles de la comanda: " + ex.toString());
         }
+        
+        MostaranadircomandaController  mostaranadircomandaController = fxmlLoader.getController();
+          mostaranadircomandaController.setesModificar(false);
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
         stage.setResizable(false);
         stage.show();
     }
@@ -105,6 +112,7 @@ public class ComandasController implements Initializable {
         }
         MostaranadircomandaController  mostaranadircomandaController = fxmlLoader.getController();
         mostaranadircomandaController.setidComanda(Integer.toString(idComandaSeleccionada));
+        mostaranadircomandaController.setesModificar(true);
             
         Stage stage = new Stage();
         stage.setScene(new Scene(root));

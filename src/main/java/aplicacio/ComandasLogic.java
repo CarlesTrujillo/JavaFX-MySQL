@@ -51,7 +51,14 @@ public class ComandasLogic {
         return ret;
     }
     
-    public long minShippingHours(){
+    public void modificarUnaComanda(int idComanda, String fechaOrden, String fechaEntrega, String fechaEnvio, String emailCliente) throws SQLException{
+        
+         Comanda comanda = new Comanda(idComanda, fechaOrden, fechaEntrega, fechaEnvio, emailCliente);
+         ComandasDAO.modificarUnaComanda(conn, comanda);
+    }
+    
+    public 
+        long minShippingHours(){
          long ret = 0;
         try {
             ret = ComandasDAO.minShippingHours(conn);

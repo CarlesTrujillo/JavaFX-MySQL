@@ -7,6 +7,7 @@ package presentacio;
 
 import aplicacio.ComandaDetailsLogic;
 import aplicacio.ComandasLogic;
+import aplicacio.LogicaProducto;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -26,6 +27,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Region;
 import model.Comanda;
 import model.ComandaDetails;
+import model.Producto;
 
 
 
@@ -41,9 +43,13 @@ public class MostaranadircomandaController implements Initializable {
     
     private String idComanda;
     
+    private Boolean esModificar;
+    
     private ComandaDetailsLogic cdl;
     
     private ComandasLogic cl;
+    
+    private LogicaProducto pl;
     
     @FXML
     private Button btn_add;
@@ -79,10 +85,10 @@ public class MostaranadircomandaController implements Initializable {
     private TextField fechaEntrega;
 
     @FXML
-    private TextField txtCredito;
+    private TextField nuevoProducto;
 
     @FXML
-    private TextField txtFecha;
+    private TextField cantidadProducto;
 
     @FXML
     void onClick_salir(ActionEvent event) {
@@ -99,6 +105,7 @@ public class MostaranadircomandaController implements Initializable {
         
         try {
              int ret = cl.crearComanda(listaVacia, fechaOrden.getText(), fechaEntrega.getText(), fechaEnvio.getText(), emailCliente.getText());
+             cdl.insertarVariasComandasDetails(listaVacia);
              
              if (ret == 1) {
                  mostrarAlertaError("No se puede crear la comanda porque la diferencia de horas entre la fecha de la creación de la comanda y la fecha prevista de entrega es menor a minShippingHours");
@@ -110,20 +117,72 @@ public class MostaranadircomandaController implements Initializable {
 
     @FXML
     void onClick_guardar(ActionEvent event) {
-
+       
+        try {
+            cl.modificarUnaComanda(Integer.parseInt(idComanda), fechaOrden.getText(), fechaEntrega.getText(), fechaEnvio.getText(), emailCliente.getText());
+        } catch (SQLException ex) {
+              mostrarAlertaError("Error al modificar la comanda: " + ex.toString());
+        }
     }
 
     @FXML
     void onClick_borrar(ActionEvent event) {
          Double precioTot = Double.parseDouble(precioTotal.getText().split(" ")[0]);
+         if(esModificar){
+            try {
+                Double ret = cdl.restarImporteDeComandaDetailsEliminada(precioTot, idComandaSeleccionada, idProductoSeleccionado);
+                cdl.borrarUnaComandaDetails(idComandaSeleccionada, idProductoSeleccionado);
+                cdl.borrarUnaComandaDetailsdeTableview(idComandaSeleccionada, idProductoSeleccionado);
+                precioTotal.setText(Double.toString(ret) + " €");
+             } catch (SQLException ex) {
+                mostrarAlertaError("Error al borrar el ComandaDetails: " + ex.toString());
+            }
+         } else{
+              Double ret = cdl.restarImporteDeComandaDetailsEliminada(precioTot, idComandaSeleccionada, idProductoSeleccionado);
+              cdl.borrarUnaComandaDetailsdeTableview(idComandaSeleccionada, idProductoSeleccionado);
+              precioTotal.setText(Double.toString(ret) + " €");
+         }
+    }
+    
+    @FXML
+    void onClick_anadirProducto(ActionEvent event) {
+        
+        Producto producto = null;
+        Double precioTot = Double.parseDouble(precioTotal.getText().split(" ")[0]);
+        
         try {
-            Double ret = cdl.restarImporteDeComandaDetailsEliminada(precioTot, idComandaSeleccionada, idProductoSeleccionado);
-            cdl.borrarUnaComandaDetails(idComandaSeleccionada, idProductoSeleccionado);
-            cdl.borrarUnaComandaDetailsdeTableview(idComandaSeleccionada, idProductoSeleccionado);
-            precioTotal.setText(Double.toString(ret) + " €");
+            producto = LogicaProducto.getProductoByNombre(nuevoProducto.getText());
         } catch (SQLException ex) {
-           mostrarAlertaError("Error al borrar el ComandaDetails: " + ex.toString());
+           mostrarAlertaError("Error al intentar encontrar el nuevo producto: " + ex.toString());
         }
+        
+        if (esModificar) {
+            try {
+                cdl.insertarUnComandaDetails(Integer.parseInt(idComanda), producto, Integer.parseInt(cantidadProducto.getText()));
+                Double nuevoPrecio = cdl.sumarImporteDeComandaDetailsCreada(precioTot,Integer.parseInt(idComanda),  producto.getCode());
+                precioTotal.setText(Double.toString(nuevoPrecio) + " €");
+                
+            } catch (SQLException ex) {
+                 mostrarAlertaError("Error al intentar insertar el nuevo ComandaDetails: " + ex.toString());
+            }
+            
+        
+        }else{
+            
+            int idUltimaComanda = 0;
+            try {
+                idUltimaComanda = cl.obtenerUltimaComanda() + 1;
+                System.out.println(idUltimaComanda);
+            } catch (SQLException ex) {
+                mostrarAlertaError("Error al intentar recuperar la ultima comanda: " + ex.toString());
+            }
+            cdl.insertarUnComandaDetailsenListaObservable(idUltimaComanda, producto, Integer.parseInt(cantidadProducto.getText()));
+            Double nuevoPrecio = cdl.sumarImporteDeComandaDetailsCreada(precioTot, idUltimaComanda,  producto.getCode());
+            precioTotal.setText(Double.toString(nuevoPrecio) + " €");
+        }
+        
+        nuevoProducto.setText("");
+        cantidadProducto.setText("");
     }
     
     /**
@@ -135,7 +194,8 @@ public class MostaranadircomandaController implements Initializable {
             cl = new ComandasLogic();
             cdl = new ComandaDetailsLogic();
             tablaOrderDetails.setItems(cdl.getLlistaObservableComandaDetails());
-            
+            double importe = cdl.importe();
+            precioTotal.setText(Double.toString(importe) + " €");
         }catch(SQLException ex){
             mostrarAlertaError("Error carregant dades: " + ex.toString());
         }catch (Exception ex){
@@ -158,6 +218,11 @@ public class MostaranadircomandaController implements Initializable {
     public void setidComanda(String idComanda) {
         this.idComanda = idComanda;
         carrgarComandaDetails();
+    }
+    
+     public void setesModificar(Boolean esModificar) {
+        this.esModificar = esModificar;
+         System.out.println(esModificar);
     }
     
     public void carrgarComandaDetails(){
