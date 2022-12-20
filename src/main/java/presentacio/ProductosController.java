@@ -187,7 +187,7 @@ public class ProductosController implements Initializable {
 
         } catch (SQLException ex) {
             mostrarAlertaError("Error carregant dades: " + ex.toString());
-        } catch (RuntimeException ex) {
+        } catch (Exception ex) {
             alertaCampoVacio("Los campos no deben estar vacíos" + ex.toString());
         }
     }
