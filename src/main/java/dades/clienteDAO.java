@@ -100,4 +100,23 @@ public class clienteDAO {
         
     }
     
+    public static double getCreditLimit() throws SQLException{
+        Connection conn = DataSource.getConnection("m03uf6_22_23", "root", "123456");
+        Statement sentencia;
+        sentencia = conn.createStatement();        
+        String query = "select * from appConfig;";
+        sentencia.executeQuery(query);
+        String resultado ="";
+        double ret = 0;
+        ResultSet rs = sentencia.getResultSet();
+        while(rs.next()){
+            resultado=rs.getString("defaultCreditLimit");
+
+        }
+        ret = Double.parseDouble(resultado);
+        return ret;
+    
+    }
+    
+    
 }

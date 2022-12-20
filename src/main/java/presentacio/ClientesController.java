@@ -22,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -31,6 +32,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 /**
@@ -84,7 +86,7 @@ public class ClientesController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {    
             ArrayList<Cliente> clientes = aplicacio.LogicaCliente.getClientes();
-                        
+            limpiarCampos();            
             for (Cliente s : clientes) {
                 llistaObservableClientes.add(new Cliente(s.getEmail(), s.getDni(),s.getNombre(),s.getTelefono(),s.getCreditoLimite(),s.getFechaNacimiento()));
             }
@@ -95,18 +97,14 @@ public class ClientesController implements Initializable {
             creditCol.setCellValueFactory(new PropertyValueFactory<>("creditoLimite"));
             birthCol.setCellValueFactory(new PropertyValueFactory<>("fechaNacimiento"));
             tablaClientes.setItems(llistaObservableClientes);
-            dades.DataSource.getConnection("m03uf6_22_23","root","123456");
             
+            dades.DataSource.getConnection("m03uf6_22_23","root","123456");
+             
         } catch (SQLException ex) {
             
 //            Logger.getLogger(ClientesController.class.getName()).log(Level.SEVERE, null, ex);
         
         }
-    }
-
-    @FXML
-    private void onClick_salir(ActionEvent event) {
-    
     }
     
     @FXML
@@ -188,6 +186,8 @@ public class ClientesController implements Initializable {
             llistaObservableClientes.set(posicion, nuevoCliente);
             tablaClientes.refresh();
             limpiarCampos();
+        }else{
+                mostrarAlertaError("Modificacion no valida.");
         }
     }
     
@@ -230,12 +230,12 @@ public class ClientesController implements Initializable {
      * Funcion para limpiar los campos de texto despues de un Insert, Update, Delete.
      * 
      */
-    public void limpiarCampos(){
+    public void limpiarCampos() throws SQLException{
         txtEmail.clear();
         txtDni.clear();
         txtTelefono.clear();
         txtNombre.clear();
-        txtCredito.clear();
+        txtCredito.setText(aplicacio.LogicaCliente.getCreditLimit() + "");
         txtFecha.clear();
     }
     
@@ -262,6 +262,8 @@ public class ClientesController implements Initializable {
                 } catch (SQLException ex) {
                 }
             }
+        }else{
+        mostrarAlertaError("Debes rellenar todos los campos para introducir un Usuario.");
         }
     }
     
@@ -293,4 +295,18 @@ public class ClientesController implements Initializable {
                 return false;
             }
     }
+    
+    /***
+     * Funcion que genera una Alerta con el String que le entra.
+     */
+         private void mostrarAlertaError(String txt)
+    {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        alert.setTitle("ERROR");
+        alert.setContentText(txt);
+
+        alert.showAndWait();
+    }
+    
 }
