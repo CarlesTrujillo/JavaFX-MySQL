@@ -56,7 +56,8 @@ public class ProductosController implements Initializable {
     ObservableList<Producto> llistaObservableProductos = FXCollections.observableArrayList();
 
     @FXML
-    private void onClickEdit(ActionEvent event) {
+    private void onClickEdit(ActionEvent event) throws SQLException {
+        modificarProducto();
     }
 
     @FXML
@@ -80,13 +81,12 @@ public class ProductosController implements Initializable {
         try {
             ArrayList<Producto> productos = aplicacio.LogicaProducto.getProductos();
 
-            for (Producto s : productos) {
-                llistaObservableProductos.add(new Producto(s.getCode(), s.getNombre(), s.getDescripcion(), s.getCantidadStock(), s.getPrecio()));
-            }
-            idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+            llistaObservableProductos.setAll(productos);
+
+            idCol.setCellValueFactory(new PropertyValueFactory<>("code"));
             nombreCol.setCellValueFactory(new PropertyValueFactory<>("nombre"));
             descCol.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-            stockCol.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+            stockCol.setCellValueFactory(new PropertyValueFactory<>("cantidadStock"));
             precioCol.setCellValueFactory(new PropertyValueFactory<>("precio"));
             tablaProductos.setItems(llistaObservableProductos);
             dades.DataSource.getConnection("m03uf6_22_23", "root", "123456");
@@ -99,38 +99,57 @@ public class ProductosController implements Initializable {
     @FXML
     void onItem_Selected(MouseEvent event) {
         Producto producto = (Producto) tablaProductos.getSelectionModel().getSelectedItem();
-        
-        if(producto != null) {
+
+        if (producto != null) {
             txtNombre.setText(producto.getNombre());
             txtDesc.setText(producto.getDescripcion());
             txtStock.setText(producto.getCantidadStock() + "");
             txtPrecio.setText(producto.getPrecio() + "");
         }
     }
-    
+
     // Función para insertar un producto
     public void insertarProducto() {
-        Producto producto = new Producto();
-        producto.setNombre(txtNombre.getText());
-        producto.setDescripcion(txtDesc.getText());
-        byte cantidadStock = Byte.parseByte(txtStock.getText());
-        producto.setCantidadStock(cantidadStock);
-        double precio = Double.parseDouble(txtPrecio.getText());
-        producto.setPrecio(precio);
+        if (noEstaVacio()) {
+            Producto producto = new Producto();
+            producto.setNombre(txtNombre.getText());
+            producto.setDescripcion(txtDesc.getText());
+            int cantidadStock = Integer.parseInt(txtStock.getText());
+            producto.setCantidadStock(cantidadStock);
+            double precio = Double.parseDouble(txtPrecio.getText());
+            producto.setPrecio(precio);
 
-        try {
-            dades.DataSource.getConnection("m03uf6_22_23", "root", "123456");
-            aplicacio.LogicaProducto.setProducto(producto);
-            llistaObservableProductos.add(producto);
+            try {
+                dades.DataSource.getConnection("m03uf6_22_23", "root", "123456");
+                aplicacio.LogicaProducto.setProducto(producto);
+                llistaObservableProductos.add(producto);
+                tablaProductos.refresh();
+                limpiarCampos();
+
+            } catch (SQLException ex) {
+
+            }
+        }
+    }
+
+    // Función para modificar un producto de la BBDD
+    public void modificarProducto() throws SQLException {
+        Producto producto = (Producto) tablaProductos.getSelectionModel().getSelectedItem();
+        if ((producto != null) && (noEstaVacio())) {
+            int posicion = tablaProductos.getSelectionModel().getSelectedIndex();
+            Producto nuevoProducto = new Producto();
+            nuevoProducto.setNombre(txtNombre.getText());
+            nuevoProducto.setDescripcion(txtDesc.getText());
+            int cantidadStock = Integer.parseInt(txtStock.getText());
+            nuevoProducto.setCantidadStock(cantidadStock);
+            nuevoProducto.setPrecio(Double.parseDouble(txtPrecio.getText()));
+            aplicacio.LogicaProducto.updateProducto(nuevoProducto);
+            llistaObservableProductos.set(posicion, nuevoProducto);
             tablaProductos.refresh();
             limpiarCampos();
-            
-        } catch (SQLException ex) {
-
         }
-
     }
-    
+
     // Función para eliminar un producto de la BBDD
     public void eliminarProducto() throws SQLException {
         Producto producto = (Producto) tablaProductos.getSelectionModel().getSelectedItem();
@@ -139,12 +158,19 @@ public class ProductosController implements Initializable {
         tablaProductos.refresh();
         limpiarCampos();
     }
-    
+
     // Función para dejar en blanco los TextField
     public void limpiarCampos() {
         txtNombre.clear();
         txtDesc.clear();
         txtPrecio.clear();
+        //txtStock = LogicaProducto.getDefaultStock();
+    }
+
+    // Función para comprobar que los campos no estén vacíos
+    public boolean noEstaVacio() {
+        return (txtNombre.getText() != null) && (txtDesc.getText() != null)
+                && (txtStock.getText() != null) && (txtPrecio.getText() != null);
     }
 
 }
