@@ -4,11 +4,11 @@ package model;
  *
  * @author D
  * @version 1.0
- * 
+ *
  * Clase Producto
  */
 public class Producto {
-    
+
     int code;
     String nombre;
     String descripcion;
@@ -22,7 +22,8 @@ public class Producto {
         this.cantidadStock = cantidadStock;
         this.precio = precio;
     }
-    
+
+    // Constructor vacío
     public Producto() {
         this.code = 0;
         this.nombre = "";
@@ -71,6 +72,4 @@ public class Producto {
         this.precio = precio;
     }
 
-    
-    
 }

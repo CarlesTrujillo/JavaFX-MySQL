@@ -15,9 +15,15 @@ import model.Producto;
  *
  * Funciones para trabajar con la tabla Productos de la BBDD
  */
+
 public class ProductosDAO {
 
-    // Función de borrado de productos en la BBDD
+    /**
+     * Función para el borrado de datos en la BBDD
+     * 
+     * @param producto
+     * @throws SQLException 
+     */
     public static void deleteProducto(Producto producto) throws SQLException {
         Connection con = DataSource.getConnection("m03uf6_22_23", "root", "123456");
         Statement sentencia;
@@ -26,7 +32,12 @@ public class ProductosDAO {
         sentencia.executeUpdate(query);
     }
 
-    // Función para insertar productos en la BBDD
+    /**
+     * Función para insertar productos en la BBDD
+     * 
+     * @param producto
+     * @throws SQLException 
+     */
     public static void insertarProducto(Producto producto) throws SQLException {
         Connection con = DataSource.getConnection("m03uf6_22_23", "root", "123456");
 
@@ -40,7 +51,12 @@ public class ProductosDAO {
         preparedStatement.executeUpdate();
     }
 
-    // Insert de Productos en la BBDD
+    /**
+     * Función para la inserción de Productos en la BBDD
+     * 
+     * @param producto
+     * @throws SQLException 
+     */
     public static void updateProducto(Producto producto) throws SQLException {
         Connection conn = DataSource.getConnection("m03uf6_22_23", "root", "123456");
         String sqlQuery = "UPDATE products SET productName = ?, productDescription = ?, quantityInStock = ?, buyPrice = ? WHERE productCode = ?;";
@@ -55,7 +71,12 @@ public class ProductosDAO {
 
     }
 
-    // Función para mostrar los productos de la BBDD
+    /**
+     * Función para mostrar los productos de la BBDD
+     * 
+     * @return
+     * @throws SQLException 
+     */
     public static ArrayList<Producto> muestraProductos() throws SQLException {
         Connection con = DataSource.getConnection("m03uf6_22_23", "root", "123456");
         ArrayList<Producto> productos = new ArrayList<>();
@@ -79,6 +100,13 @@ public class ProductosDAO {
         return productos;
     }
 
+    /**
+     * Función para recoger el valor de defaultQuantityInStock de la 
+     * tabla appConfig para poder trabajar con ello
+     * 
+     * @return
+     * @throws SQLException 
+     */
     public static int getStockDefault() throws SQLException {
         Connection con = DataSource.getConnection("m03uf6_22_23", "root", "123456");
         Statement sentencia;
@@ -95,6 +123,14 @@ public class ProductosDAO {
         return ret;
     }
 
+    /**
+     * Función para recoger productos en base al nombre que especifique
+     * el usuario
+     * 
+     * @param nombre
+     * @return
+     * @throws SQLException 
+     */
     public static Producto getNombre(String nombre) throws SQLException {
         Connection con = DataSource.getConnection("m03uf6_22_23", "root", "123456");
         Statement sentencia;
