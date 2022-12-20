@@ -29,8 +29,8 @@
             <TextField fx:id="fechaEntrega" layoutX="356.0" layoutY="64.0" />
             <TextField fx:id="fechaEnvio" layoutX="356.0" layoutY="109.0" />
             <TextField fx:id="emailCliente" layoutX="356.0" layoutY="156.0" />
-            <TextField fx:id="txtCredito" layoutX="356.0" layoutY="207.0" />
-            <TextField fx:id="txtFecha" layoutX="356.0" layoutY="253.0" />
+            <TextField fx:id="nuevoProducto" layoutX="356.0" layoutY="207.0" />
+            <TextField fx:id="cantidadProducto" layoutX="356.0" layoutY="253.0" />
             <Label layoutX="112.0" layoutY="13.0" prefHeight="39.0" prefWidth="147.0" text="Fecha de la orden" />
             <Label layoutX="112.0" layoutY="60.0" prefHeight="39.0" prefWidth="162.0" text="Fecha de entrega" />
             <Label layoutX="112.0" layoutY="105.0" prefHeight="39.0" prefWidth="162.0" text="Fecha de envio" />

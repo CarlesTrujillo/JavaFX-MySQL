@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.ComandaDetails;
+import model.Producto;
 
 /**
  *
@@ -18,19 +19,19 @@ import model.ComandaDetails;
  */
 public class ComandaDetailsLogic {
     
-  ObservableList<ComandaDetails> llistaObservableComandaDetails;
+  ObservableList<ComandaDetails> listaObservableComandaDetails;
   private Connection conn;
     
      public ComandaDetailsLogic() throws SQLException {
 
         conn = DataSource.getConnection("m03uf6_22_23", "root", "1234");
 
-        llistaObservableComandaDetails = FXCollections.<ComandaDetails>observableArrayList();
+        listaObservableComandaDetails = FXCollections.<ComandaDetails>observableArrayList();
     }
     
      public void cargarComandaDetails(String idComanda) throws SQLException {
 
-        this.llistaObservableComandaDetails.setAll(ComandasDetailsDAO.cargarComndasDetails(conn, idComanda));
+        this.listaObservableComandaDetails.setAll(ComandasDetailsDAO.cargarComndasDetails(conn, idComanda));
 
     }
     
@@ -44,23 +45,33 @@ public class ComandaDetailsLogic {
         ComandasDetailsDAO.borrarUnaComandaDetails(conn, idComanda, idProducto);
     }
      
-     public void insertarVariasComandasDetails() throws SQLException{
-         for (ComandaDetails comandaDetails : llistaObservableComandaDetails) {
+     public void insertarVariasComandasDetails(Boolean permitir) throws SQLException{
+        if(!permitir){ 
+            for (ComandaDetails comandaDetails : listaObservableComandaDetails) {
                 
-             insertarUnComandaDetails(comandaDetails);
-         }
+                ComandasDetailsDAO.insertarUnComandaDetails(conn, comandaDetails);
+            }
+        }
      }
      
-    public void insertarUnComandaDetails(ComandaDetails comandaDetails) throws SQLException{
-    
+     public void insertarUnComandaDetailsenListaObservable(int idComanda, Producto producto, int cantidadPedida){
+         
+         ComandaDetails comandaDetails = new ComandaDetails(idComanda, producto.getCode(), cantidadPedida, producto.getPrecio(), 0);
+         this.listaObservableComandaDetails.add(comandaDetails);
+     }
+     
+    public void insertarUnComandaDetails(int idComanda, Producto producto, int cantidadPedida) throws SQLException{
+        
+        ComandaDetails comandaDetails = new ComandaDetails(idComanda, producto.getCode(), cantidadPedida, producto.getPrecio(), 0);
         ComandasDetailsDAO.insertarUnComandaDetails(conn, comandaDetails);
+        this.listaObservableComandaDetails.add(comandaDetails);
     }
     
     public void borrarUnaComandaDetailsdeTableview(int idComanda, int idProducto){
         
-        for (ComandaDetails comandaDetails : llistaObservableComandaDetails) {
+        for (ComandaDetails comandaDetails : listaObservableComandaDetails) {
             if (comandaDetails.getNumeroComanda() == idComanda && comandaDetails.getCodigoProducto() == idProducto) {
-                llistaObservableComandaDetails.remove(comandaDetails);
+                listaObservableComandaDetails.remove(comandaDetails);
                 break;
             }
         }
@@ -68,7 +79,7 @@ public class ComandaDetailsLogic {
     
     public Double restarImporteDeComandaDetailsEliminada(Double importeTotal, int idComanda, int idProducto){
         double ret = 0;
-          for (ComandaDetails comandaDetails : llistaObservableComandaDetails) {
+          for (ComandaDetails comandaDetails : listaObservableComandaDetails) {
                if (comandaDetails.getNumeroComanda() == idComanda && comandaDetails.getCodigoProducto() == idProducto) {
                     double precio = (double) comandaDetails.getPrecioProducto() * comandaDetails.getCantidadPedida();
                    importeTotal -= precio;
@@ -79,15 +90,29 @@ public class ComandaDetailsLogic {
           return ret;
     }
     
+    public Double sumarImporteDeComandaDetailsCreada(Double importeTotal, int idComanda, int idProducto){
+        
+        double ret = 0;
+          for (ComandaDetails comandaDetails : listaObservableComandaDetails) {
+               if (comandaDetails.getNumeroComanda() == idComanda && comandaDetails.getCodigoProducto() == idProducto) {
+                    double precio = (double) comandaDetails.getPrecioProducto() * comandaDetails.getCantidadPedida();
+                   importeTotal += precio;
+                   ret = importeTotal;
+               }
+          }
+          
+          return ret;
+    }
+    
      public Boolean listaVacia() {
          
-        return llistaObservableComandaDetails.isEmpty();
+        return listaObservableComandaDetails.isEmpty();
     }
      
     public double importe(){
         double ret = 0;
        
-        for (ComandaDetails comandaDetails : llistaObservableComandaDetails) {
+        for (ComandaDetails comandaDetails : listaObservableComandaDetails) {
                 double precio = (double) comandaDetails.getPrecioProducto() * comandaDetails.getCantidadPedida();
                 ret += precio;
             }
@@ -96,6 +121,6 @@ public class ComandaDetailsLogic {
     
      
     public ObservableList<ComandaDetails> getLlistaObservableComandaDetails() {
-        return llistaObservableComandaDetails;
+        return listaObservableComandaDetails;
     }
 }
