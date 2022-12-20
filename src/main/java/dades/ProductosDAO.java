@@ -95,20 +95,27 @@ public class ProductosDAO {
         return ret;
     }
 
-    /*public static Producto getNombre() throws SQLException {
+    public static Producto getNombre(String nombre) throws SQLException {
         Connection con = DataSource.getConnection("m03uf6_22_23", "root", "123456");
-        Producto producto = new Producto();
         Statement sentencia;
+        Producto producto = new Producto();
         
         sentencia = con.createStatement();
-        String sqlQuery = "SELECT * FROM products WHERE productName = " + producto.getNombre() + ";";
+        String sqlQuery = "SELECT * FROM products WHERE productName = '" + nombre + "';";
         sentencia.executeQuery(sqlQuery);
         ResultSet rs = sentencia.getResultSet();
         
         while(rs.next()) {
+            int codigo = Integer.parseInt(rs.getString("productCode"));
+            producto.setCode(codigo);
             producto.setNombre(rs.getString("productName"));
+            producto.setDescripcion(rs.getString("productDescription"));
+            int cantidad = Integer.parseInt(rs.getString("quantityInStock"));
+            producto.setCantidadStock(cantidad);
+            double doble = Double.parseDouble(rs.getString("buyPrice"));
+            producto.setPrecio(doble);
         }
         
         return producto;
-    }*/
+    }
 }

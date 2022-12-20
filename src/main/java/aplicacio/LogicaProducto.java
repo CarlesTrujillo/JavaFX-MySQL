@@ -41,4 +41,10 @@ public class LogicaProducto {
 
         return cantidadStockDefault;
     }
+    
+    public static Producto getProductoByNombre(String nombre) throws SQLException {
+        Producto producto = dades.ProductosDAO.getNombre(nombre);
+        
+        return producto;
+    }
 }
