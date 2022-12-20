@@ -41,6 +41,8 @@ public class MostaranadircomandaController implements Initializable {
     
     private String idComanda;
     
+    private Boolean esModificar;
+    
     private ComandaDetailsLogic cdl;
     
     private ComandasLogic cl;
@@ -92,13 +94,14 @@ public class MostaranadircomandaController implements Initializable {
     @FXML
     void onClick_anadir(ActionEvent event) {
         
-        Boolean listaVacia = cdl.listaVacia();
+        Boolean listaVacia = false; //cdl.listaVacia();
         if (listaVacia) {
               mostrarAlertaError("No se puede añadir una comanda sin lineas de comanda");
         }
         
         try {
              int ret = cl.crearComanda(listaVacia, fechaOrden.getText(), fechaEntrega.getText(), fechaEnvio.getText(), emailCliente.getText());
+             cdl.insertarVariasComandasDetails();
              
              if (ret == 1) {
                  mostrarAlertaError("No se puede crear la comanda porque la diferencia de horas entre la fecha de la creación de la comanda y la fecha prevista de entrega es menor a minShippingHours");
@@ -110,20 +113,36 @@ public class MostaranadircomandaController implements Initializable {
 
     @FXML
     void onClick_guardar(ActionEvent event) {
-
+        
+        try {
+            cl.modificarUnaComanda(Integer.parseInt(idComanda), fechaOrden.getText(), fechaEntrega.getText(), fechaEnvio.getText(), emailCliente.getText());
+        } catch (SQLException ex) {
+              mostrarAlertaError("Error al modificar la comanda: " + ex.toString());
+        }
     }
 
     @FXML
     void onClick_borrar(ActionEvent event) {
          Double precioTot = Double.parseDouble(precioTotal.getText().split(" ")[0]);
-        try {
-            Double ret = cdl.restarImporteDeComandaDetailsEliminada(precioTot, idComandaSeleccionada, idProductoSeleccionado);
-            cdl.borrarUnaComandaDetails(idComandaSeleccionada, idProductoSeleccionado);
-            cdl.borrarUnaComandaDetailsdeTableview(idComandaSeleccionada, idProductoSeleccionado);
-            precioTotal.setText(Double.toString(ret) + " €");
-        } catch (SQLException ex) {
-           mostrarAlertaError("Error al borrar el ComandaDetails: " + ex.toString());
-        }
+         if(esModificar){
+            try {
+                Double ret = cdl.restarImporteDeComandaDetailsEliminada(precioTot, idComandaSeleccionada, idProductoSeleccionado);
+                cdl.borrarUnaComandaDetails(idComandaSeleccionada, idProductoSeleccionado);
+                cdl.borrarUnaComandaDetailsdeTableview(idComandaSeleccionada, idProductoSeleccionado);
+                precioTotal.setText(Double.toString(ret) + " €");
+             } catch (SQLException ex) {
+                mostrarAlertaError("Error al borrar el ComandaDetails: " + ex.toString());
+            }
+         } else{
+              Double ret = cdl.restarImporteDeComandaDetailsEliminada(precioTot, idComandaSeleccionada, idProductoSeleccionado);
+              cdl.borrarUnaComandaDetailsdeTableview(idComandaSeleccionada, idProductoSeleccionado);
+              precioTotal.setText(Double.toString(ret) + " €");
+         }
+    }
+    
+    @FXML
+    void onClick_anadirProducto(ActionEvent event) {
+    
     }
     
     /**
@@ -158,6 +177,11 @@ public class MostaranadircomandaController implements Initializable {
     public void setidComanda(String idComanda) {
         this.idComanda = idComanda;
         carrgarComandaDetails();
+    }
+    
+     public void setesModificar(Boolean esModificar) {
+        this.esModificar = esModificar;
+         System.out.println(esModificar);
     }
     
     public void carrgarComandaDetails(){

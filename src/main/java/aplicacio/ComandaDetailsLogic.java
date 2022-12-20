@@ -43,6 +43,18 @@ public class ComandaDetailsLogic {
         
         ComandasDetailsDAO.borrarUnaComandaDetails(conn, idComanda, idProducto);
     }
+     
+     public void insertarVariasComandasDetails() throws SQLException{
+         for (ComandaDetails comandaDetails : llistaObservableComandaDetails) {
+                
+             insertarUnComandaDetails(comandaDetails);
+         }
+     }
+     
+    public void insertarUnComandaDetails(ComandaDetails comandaDetails) throws SQLException{
+    
+        ComandasDetailsDAO.insertarUnComandaDetails(conn, comandaDetails);
+    }
     
     public void borrarUnaComandaDetailsdeTableview(int idComanda, int idProducto){
         

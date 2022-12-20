@@ -5,6 +5,7 @@
 package dades;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -39,8 +40,8 @@ public class ComandasDetailsDAO {
          String nomBD = conn.getCatalog();
          sentencia = conn.createStatement();
          sentencia.executeUpdate("DELETE FROM "+nomBD+".orderdetails WHERE orderNumber = " + idComanda);
-    }
     
+    }
      public static void borrarUnaComandaDetails(Connection conn , int idComanda, int idProducto) throws SQLException
     {
          Statement sentencia;
@@ -48,4 +49,23 @@ public class ComandasDetailsDAO {
          sentencia = conn.createStatement();
          sentencia.executeUpdate("DELETE FROM "+nomBD+".orderdetails WHERE orderNumber = " + idComanda + " AND productCode = " + idProducto);
     } 
+    
+    public static void insertarUnComandaDetails(Connection conn, ComandaDetails comandaDetails) throws SQLException{
+        
+          String sqlQuery;
+        String nomBD = conn.getCatalog();
+        
+        sqlQuery = "INSERT INTO "+nomBD+".orderdetails (orderNumber, productCode, quantityOrdered, priceEach, orderLineNumber) VALUES (?,?,?,?,?);";
+        
+        PreparedStatement preparedStatement = conn.prepareStatement(sqlQuery);
+        preparedStatement.setString(1, Integer.toString(comandaDetails.getNumeroComanda()));
+        preparedStatement.setString(2, Integer.toString(comandaDetails.getCodigoProducto()));
+        preparedStatement.setString(3, Integer.toString(comandaDetails.getCantidadPedida()));
+        preparedStatement.setString(4,  Double.toString(comandaDetails.getPrecioProducto()));
+        preparedStatement.setString(5,  "0");
+        
+        preparedStatement.executeUpdate();
+        
+    
+    }
 }

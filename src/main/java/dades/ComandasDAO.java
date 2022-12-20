@@ -51,7 +51,18 @@ public class ComandasDAO {
         return ret;
     }
     
+    public static void modificarUnaComanda(Connection con, Comanda comanda) throws SQLException{
     
+         String sqlQuery = "UPDATE orders SET orderDate = ?, requiredDate = ?, shippedDate = ? WHERE orderNumber = ?";
+         
+         PreparedStatement preparedStatement = con.prepareStatement(sqlQuery);
+         preparedStatement.setString(1, comanda.getFechaOrden());
+         preparedStatement.setString(2, comanda.getFechaRequerida());
+         preparedStatement.setString(3, comanda.getFechaEnvio());
+         preparedStatement.setString(4, Integer.toString(comanda.getNumeroOrden()));
+         preparedStatement.executeUpdate();
+         
+    }
     
     public static long minShippingHours(Connection con) throws SQLException{
         long ret = 0;
