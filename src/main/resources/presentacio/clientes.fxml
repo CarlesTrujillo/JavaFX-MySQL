@@ -24,7 +24,6 @@
                   <TableColumn fx:id="birthCol" prefWidth="166.0" text="Fecha Nacimiento" />
               </columns>
             </TableView>
-            <Button fx:id="btn_salir" layoutX="7.0" layoutY="7.0" mnemonicParsing="false" onAction="#onClick_salir" text="Salir" />
             <Button fx:id="btn_add" layoutX="13.0" layoutY="632.0" mnemonicParsing="false" onAction="#onClick_añadir" prefHeight="39.0" prefWidth="204.0" text="Añadir" />
             <Button fx:id="btn_modificar" layoutX="224.0" layoutY="632.0" mnemonicParsing="false" onAction="#onClick_modificar" prefHeight="39.0" prefWidth="247.0" text="Modificar" />
             <Button fx:id="btn_borrar" layoutX="480.0" layoutY="632.0" mnemonicParsing="false" onAction="#onClick_borrar" prefHeight="39.0" prefWidth="238.0" text="Borrar" />
